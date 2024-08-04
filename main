@@ -1,0 +1,96 @@
+local Util = {}
+
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CoreGui = game:GetService("CoreGui")
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer.PlayerGui
+
+local function Find(String, Match)
+    return (String:lower()):find(Match:lower())
+end
+
+local function GetOthers()
+    local List = {}
+    for _, Player in Players:GetPlayers() do
+        if Player == LocalPlayer then continue end
+        List[#List + 1] = Player
+    end
+    return List
+end
+
+Util.GetPlayer = function(User)
+    if User:lower() == "all" then return Players:GetPlayers() end 
+    if User:lower() == "others" then return GetOthers() end
+    if User:lower() == "me" then return {LocalPlayer} end
+    if User:lower() == "random" then return {Players:GetPlayers()[math.random(#Players:GetPlayers())]} end
+
+    for _, Player in Players:GetPlayers() do
+        if Find(Player.Name, User) or Find(Player.DisplayName, User) then
+            return {Player}
+        end
+    end
+end
+
+local IsLegacy = (TextChatService.ChatVersion == Enum.ChatVersion.LegacyChatService)
+local ChatRemote = ReplicatedStorage:FindFirstChild("SayMessageRequest", true)
+local Channel = not IsLegacy and TextChatService.TextChannels.RBXGeneral
+
+Util.Chat = function(Message)
+    if IsLegacy then
+        ChatRemote:FireServer(Message, "All")
+    else
+        Channel:SendAsync(Message)
+    end
+end
+
+local ChatBar = CoreGui:FindFirstChild("TextBoxContainer", true) or PlayerGui:FindFirstChild("Chat"):FindFirstChild("ChatBar", true)
+ChatBar = ChatBar:FindFirstChild("TextBox") or ChatBar
+
+Util.ChatHook = function()
+    local Connection = Instance.new("BindableFunction")
+
+    ChatBar.MultiLine = true
+    UserInputService.InputBegan:Connect(function(Input, GPE)
+        if not GPE or Input.KeyCode ~= Enum.KeyCode.Return then return end
+        Connection:Invoke(ChatBar.Text:gsub("%c", ""))
+        ChatBar.Text = ""
+        ChatBar:ReleaseFocus()
+    end)
+
+    return Connection
+end
+
+Util.Commands = {}
+Util.Prefix = ";"
+
+Util.AddCommand = function(Aliases, Description, Callback)
+    Util.Commands[#Util.Commands + 1] = {
+        Aliases = Aliases,
+        Description = Description,
+        Callback = Callback,
+        Env = {},
+    }
+end
+
+Util.GetCommand = function(TargetAlias, UsePrefix)
+    for _, Command in Util.Commands do
+        for _, Alias in Command.Aliases do
+            if (UsePrefix and Prefix or "" .. Alias):lower() == TargetAlias:lower() then
+                return Command
+            end
+        end
+    end
+end
+
+Util.GetEnv = function(TargetAlias)
+    local Found = Util.GetCommand(TargetAlias)
+    if not Found then return end
+
+    return Found.Env
+end
+
+return Util
