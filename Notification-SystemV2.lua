@@ -63,7 +63,7 @@ function CreateNotification(Options)
     Dismiss.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     Dismiss.BackgroundTransparency = 0.300
     Dismiss.BorderSizePixel = 0
-    Dismiss.Position = UDim2.new(1, 350, 0.75, 0)
+    Dismiss.Position = UDim2.new(1, 300, 0.6, 0)
     Dismiss.Size = UDim2.new(0, 350, 0, 150)
     Dismiss.Visible = false
 
@@ -97,7 +97,7 @@ function CreateNotification(Options)
     ProgressBar.Parent = Dismiss
     ProgressBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     ProgressBar.BorderSizePixel = 0
-    ProgressBar.Position = UDim2.new(0.05, 0, 0.95, 0)
+    ProgressBar.Position = UDim2.new(0.05, 0, 0.9, 0)
     ProgressBar.Size = UDim2.new(0.9, 0, 0.03, 0)
 
     ProgressFill.Name = "ProgressFill"
@@ -130,8 +130,8 @@ function CreateNotification(Options)
     Dismiss.Visible = true
 
     local TweenService = game:GetService("TweenService")
-    
-    TweenService:Create(Dismiss, TweenInfo.new(0.5), {Position = UDim2.new(1, -15, 0.75, 0)}):Play()
+
+    TweenService:Create(Dismiss, TweenInfo.new(0.5), {Position = UDim2.new(1, -10, 0.6, 0)}):Play()
 
     if not Options.NeverExpire then
         local timeRemaining = Options.Length or 5
