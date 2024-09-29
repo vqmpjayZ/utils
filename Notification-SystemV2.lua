@@ -33,131 +33,70 @@ local function SetDefault(v1, v2)
     return v3
 end
 
-function CreateNotification(Options)
-    local Default = {
-        Buttons = {
-            [1] = {
-                Title = 'Dismiss',
-                ClosesUI = true,
-                Callback = function() end
-            }
-        },
-        Title = 'Notification Title',
-        Content = 'Placeholder notification content',
-        Length = 5,
-        NeverExpire = false
-    }
-    Options = SetDefault(Options, Default)
+local Notification = {}
+local NotificationQueue = {}
+local NotificationCount = 0
+local GUI = Instance.new("ScreenGui")
+GUI.Parent = game.CoreGui
 
-    local Dismiss = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local TextLabel = Instance.new("TextLabel")
-    local TextLabel_2 = Instance.new("TextLabel")
-    local TextButton = Instance.new("TextButton")
-    local UICorner_2 = Instance.new("UICorner")
+local function CreateNotification(title, description)
+    NotificationCount = NotificationCount + 1
+    local NotificationHolder = Instance.new("Frame")
+    NotificationHolder.Size = UDim2.new(0, 300, 0, 100)
+    NotificationHolder.Position = UDim2.new(1, -5, 1, -100 - (NotificationCount - 1) * 110)
+    NotificationHolder.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    NotificationHolder.BackgroundTransparency = 0.5
+    NotificationHolder.Parent = GUI
+
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Size = UDim2.new(1, 0, 0, 20)
+    TitleLabel.Position = UDim2.new(0, 0, 0, 10)
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Parent = NotificationHolder
+
+    local DescriptionLabel = Instance.new("TextLabel")
+    DescriptionLabel.Size = UDim2.new(1, 0, 0, 40)
+    DescriptionLabel.Position = UDim2.new(0, 0, 0, 30)
+    DescriptionLabel.Text = description
+    DescriptionLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+    DescriptionLabel.BackgroundTransparency = 1
+    DescriptionLabel.Parent = NotificationHolder
+
     local ProgressBar = Instance.new("Frame")
-    local ProgressFill = Instance.new("Frame")
+    ProgressBar.Size = UDim2.new(1, 0, 0, 10)
+    ProgressBar.Position = UDim2.new(0, 0, 0, 75)
+    ProgressBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ProgressBar.Parent = NotificationHolder
 
-    local ambientShadow = Instance.new("ImageLabel")
-    ambientShadow.Name = "ambientShadow"
-    ambientShadow.Parent = Holder
-    ambientShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    ambientShadow.BackgroundTransparency = 1.000
-    ambientShadow.BorderSizePixel = 0
-    ambientShadow.Position = UDim2.new(0.91525954, 0, 0.936809778, 0)
-    ambientShadow.Size = UDim2.new(0, 0, 0, 0)
-    ambientShadow.Image = "rbxassetid://1316045217"
-    ambientShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    ambientShadow.ImageTransparency = 0.400
-    ambientShadow.ScaleType = Enum.ScaleType.Slice
-    ambientShadow.SliceCenter = Rect.new(10, 10, 118, 118)
+    local DismissButton = Instance.new("TextButton")
+    DismissButton.Size = UDim2.new(0, 100, 0, 30)
+    DismissButton.Position = UDim2.new(0.5, -50, 0.8, 0)
+    DismissButton.Text = "Dismiss"
+    DismissButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    DismissButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    DismissButton.Parent = NotificationHolder
 
-    Dismiss.Name = "Notification"
-    Dismiss.Parent = ambientShadow
-    Dismiss.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    Dismiss.BackgroundTransparency = 0.2
-    Dismiss.BorderSizePixel = 0
-    Dismiss.Size = UDim2.new(0, 350, 0, 150)
-    Dismiss.Visible = false
+    DismissButton.MouseButton1Click:Connect(function()
+        NotificationHolder:Destroy()
+        NotificationCount = NotificationCount - 1
+        for i = 1, #NotificationQueue do
+            local queuedNotification = NotificationQueue[i]
+            queuedNotification.Position = UDim2.new(1, -5, 1, -100 - (i - 1) * 110)
+        end
+    end)
 
-    UICorner.Parent = Dismiss
+    table.insert(NotificationQueue, NotificationHolder)
+    
+    NotificationHolder:TweenPosition(UDim2.new(1, -5, 1, -100), "Out", "Quad", 0.5)
+    wait(5)
+    NotificationHolder:TweenPosition(UDim2.new(1, -5, 1, -100 - (NotificationCount - 1) * 110), "Out", "Quad", 0.5)
+end
 
-    TextLabel.Parent = Dismiss
-    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TextLabel.BackgroundTransparency = 1.000
-    TextLabel.Position = UDim2.new(0.05, 0, 0.05, 0)
-    TextLabel.Size = UDim2.new(0, 330, 0, 30)
-    TextLabel.Font = Enum.Font.GothamMedium
-    TextLabel.Text = Options.Title
-    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TextLabel.TextSize = 18.000
-    TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-    ProgressBar.Name = "ProgressBar"
-    ProgressBar.Parent = Dismiss
-    ProgressBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    ProgressBar.BorderSizePixel = 0
-    ProgressBar.Position = UDim2.new(0.05, -5, 0.35, 0)
-    ProgressBar.Size = UDim2.new(0.9, 0, 0.02, 0)
-
-    ProgressFill.Name = "ProgressFill"
-    ProgressFill.Parent = ProgressBar
-    ProgressFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ProgressFill.BorderSizePixel = 0
-    ProgressFill.Size = UDim2.new(0, 0, 1, 0)
-
-    TextLabel_2.Parent = Dismiss
-    TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TextLabel_2.BackgroundTransparency = 1.000
-    TextLabel_2.Position = UDim2.new(0.05, 0, 0.4, 0)
-    TextLabel_2.Size = UDim2.new(0, 330, 0, 60)
-    TextLabel_2.Font = Enum.Font.Gotham
-    TextLabel_2.Text = Options.Content
-    TextLabel_2.TextColor3 = Color3.fromRGB(234, 234, 234)
-    TextLabel_2.TextSize = 16.000
-    TextLabel_2.TextWrapped = true
-    TextLabel_2.TextXAlignment = Enum.TextXAlignment.Left
-    TextLabel_2.TextYAlignment = Enum.TextYAlignment.Top
-
-    if Options.Buttons[1] then
-        TextButton.Parent = Dismiss
-        TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TextButton.Position = UDim2.new(0.05, 0, 0.75, 0)
-        TextButton.Size = UDim2.new(0, 330, 0, 30)
-        TextButton.Font = Enum.Font.GothamMedium
-        TextButton.Text = Options.Buttons[1].Title or "Dismiss"
-        TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-        TextButton.TextSize = 16.000
-        UICorner_2.CornerRadius = UDim.new(0, 6)
-        UICorner_2.Parent = TextButton
-        TextButton.MouseButton1Click:Connect(function()
-            if Options.Buttons[1].Callback then
-                task.spawn(Options.Buttons[1].Callback)
-            end
-            if Options.Buttons[1].ClosesUI then
-                Dismiss:Destroy()
-                AmbientShadow:Destroy()
-            end
-        end)
-    end
-
-    Dismiss.Visible = true
-
-    local TweenService = game:GetService("TweenService")
-
-    TweenService:Create(ambientShadow, TweenInfo.new(0.3), {Size = UDim2.new(0, 360, 0, 160)}):Play()
-    TweenService:Create(Dismiss, TweenInfo.new(0.3), {Size = UDim2.new(0, 350, 0, 150)}):Play()
-
-    if not Options.NeverExpire then
-        local timeRemaining = Options.Length or 5
-        TweenService:Create(ProgressFill, TweenInfo.new(timeRemaining, Enum.EasingStyle.Linear), {Size = UDim2.new(1, 0, 1, 0)}):Play()
-
-        task.delay(timeRemaining, function()
-            TweenService:Create(ambientShadow, TweenInfo.new(0.2), {Size = UDim2.new(0, 0, 0, 0)}):Play()
-            task.wait(0.2)
-            Dismiss:Destroy()
-        end)
-    end
+function Notification:Notify(title, description)
+    createNotification(title, description)
 end
 
 return CreateNotification
+
