@@ -12,10 +12,10 @@ Holder.Active = true
 Holder.AnchorPoint = Vector2.new(1, 1)
 Holder.BackgroundTransparency = 1.000
 Holder.BorderSizePixel = 0
-Holder.Position = UDim2.new(1, -10, 1, -20)  -- Closer to right wall
+Holder.Position = UDim2.new(1, -10, 1, -20)
 Holder.Size = UDim2.new(0.3, 0, 1, 0)
 Holder.CanvasSize = UDim2.new(0, 0, 0, 0)
-Holder.ScrollBarThickness = 0  -- Hide scrollbar
+Holder.ScrollBarThickness = 0
 
 Sorter.Name = "Sorter"
 Sorter.Parent = Holder
@@ -34,11 +34,11 @@ local function SetDefault(v1, v2)
 end
 
 local function UpdateNotifications()
-    local currentPosition = 0  -- Keep track of Y position for stacking
+    local currentPosition = 0
     for i, notification in ipairs(Holder:GetChildren()) do
         if notification:IsA("ImageLabel") then
-            notification.Position = UDim2.new(0.5, 0, 1, -(currentPosition + 160))  -- Ensure they don't overlap
-            currentPosition = currentPosition + 170  -- Space between each notification
+            notification.Position = UDim2.new(0.5, 0, 1, -(currentPosition + 160))
+            currentPosition = currentPosition + 170
         end
     end
 end
@@ -129,8 +129,8 @@ function CreateNotification(Options)
     if Options.Buttons[1] then
         TextButton.Parent = Dismiss
         TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TextButton.Position = UDim2.new(0, 0, 0.1, 0)  -- Move button far left
-        TextButton.Size = UDim2.new(0, 290, 0, 30)
+        TextButton.Position = UDim2.new(0.05, 5, 0.75, 0)
+        TextButton.Size = UDim2.new(0, 300, 0, 30)
         TextButton.Font = Enum.Font.GothamMedium
         TextButton.Text = Options.Buttons[1].Title or "Dismiss"
         TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -167,7 +167,7 @@ function CreateNotification(Options)
         end)
     end
 
-    UpdateNotifications()  -- Move other notifications up
+    UpdateNotifications()
 end
 
-return CreateNotification
+return CreateNotification 
