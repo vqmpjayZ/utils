@@ -13,7 +13,7 @@ Holder.AnchorPoint = Vector2.new(1, 1)
 Holder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Holder.BackgroundTransparency = 1.000
 Holder.BorderSizePixel = 0
-Holder.Position = UDim2.new(1, -360, 1, -20)
+Holder.Position = UDim2.new(1, -10, 1, -20)
 Holder.Size = UDim2.new(0.3, 0, 1, 0)
 Holder.CanvasSize = UDim2.new(0, 0, 0, 0)
 
