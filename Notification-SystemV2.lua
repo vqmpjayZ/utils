@@ -13,7 +13,7 @@ Holder.AnchorPoint = Vector2.new(1, 0)
 Holder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Holder.BackgroundTransparency = 1.000
 Holder.BorderSizePixel = 0
-Holder.Position = UDim2.new(1, -5, 0, 0)
+Holder.Position = UDim2.new(1, -20, 0, 0)
 Holder.Size = UDim2.new(0.3, 0, 1, 0)
 Holder.CanvasSize = UDim2.new(0, 0, 0, 0)
 
@@ -63,7 +63,7 @@ function CreateNotification(Options)
     Dismiss.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     Dismiss.BackgroundTransparency = 0.300
     Dismiss.BorderSizePixel = 0
-    Dismiss.Position = UDim2.new(1, 300, 0.6, 0)
+    Dismiss.Position = UDim2.new(1, 300, 0.55, 0)
     Dismiss.Size = UDim2.new(0, 350, 0, 150)
     Dismiss.Visible = false
 
@@ -97,7 +97,7 @@ function CreateNotification(Options)
     ProgressBar.Parent = Dismiss
     ProgressBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     ProgressBar.BorderSizePixel = 0
-    ProgressBar.Position = UDim2.new(0.05, 0, 0.9, 0)
+    ProgressBar.Position = UDim2.new(0.05, -5, 0.9, 0)
     ProgressBar.Size = UDim2.new(0.9, 0, 0.03, 0)
 
     ProgressFill.Name = "ProgressFill"
@@ -131,7 +131,7 @@ function CreateNotification(Options)
 
     local TweenService = game:GetService("TweenService")
 
-    TweenService:Create(Dismiss, TweenInfo.new(0.5), {Position = UDim2.new(1, -10, 0.6, 0)}):Play()
+    TweenService:Create(Dismiss, TweenInfo.new(0.5), {Position = UDim2.new(1, -20, 0.55, 0)}):Play()
 
     if not Options.NeverExpire then
         local timeRemaining = Options.Length or 5
