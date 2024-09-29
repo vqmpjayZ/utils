@@ -1,4 +1,4 @@
---test 2
+--3
 
 local NotifUI = Instance.new("ScreenGui")
 local Holder = Instance.new("ScrollingFrame")
@@ -15,7 +15,7 @@ Holder.AnchorPoint = Vector2.new(1, 1)  -- Bottom-right anchor
 Holder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Holder.BackgroundTransparency = 1.000
 Holder.BorderSizePixel = 0
-Holder.Position = UDim2.new(1, 0, 1, -20)  -- Directly against the right side, with bottom padding
+Holder.Position = UDim2.new(1, -10, 1, -20)  -- Adjusted to be right against the right edge
 Holder.Size = UDim2.new(0.3, 0, 1, 0)
 Holder.CanvasSize = UDim2.new(0, 0, 0, 0)
 
@@ -77,9 +77,9 @@ function CreateNotification(Options)
     Dismiss.Name = "Notification"
     Dismiss.Parent = ambientShadow
     Dismiss.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    Dismiss.BackgroundTransparency = 0.15  -- Slightly transparent background
+    Dismiss.BackgroundTransparency = 0.2  -- Set to a slightly transparent background
     Dismiss.BorderSizePixel = 0
-    Dismiss.Size = UDim2.new(0, 300, 0, 120)  -- Bigger notification size
+    Dismiss.Size = UDim2.new(0, 350, 0, 150)  -- Increased size
     Dismiss.Visible = false
 
     UICorner.Parent = Dismiss
@@ -88,11 +88,11 @@ function CreateNotification(Options)
     TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel.BackgroundTransparency = 1.000
     TextLabel.Position = UDim2.new(0.05, 0, 0.05, 0)
-    TextLabel.Size = UDim2.new(0, 280, 0, 30)
+    TextLabel.Size = UDim2.new(0, 330, 0, 30)
     TextLabel.Font = Enum.Font.GothamMedium
     TextLabel.Text = Options.Title
     TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TextLabel.TextSize = 16.000
+    TextLabel.TextSize = 18.000
     TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 
     ProgressBar.Name = "ProgressBar"
@@ -112,11 +112,11 @@ function CreateNotification(Options)
     TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel_2.BackgroundTransparency = 1.000
     TextLabel_2.Position = UDim2.new(0.05, 0, 0.4, 0)
-    TextLabel_2.Size = UDim2.new(0, 280, 0, 50)
+    TextLabel_2.Size = UDim2.new(0, 330, 0, 60)
     TextLabel_2.Font = Enum.Font.Gotham
     TextLabel_2.Text = Options.Content
     TextLabel_2.TextColor3 = Color3.fromRGB(234, 234, 234)
-    TextLabel_2.TextSize = 14.000
+    TextLabel_2.TextSize = 16.000
     TextLabel_2.TextWrapped = true
     TextLabel_2.TextXAlignment = Enum.TextXAlignment.Left
     TextLabel_2.TextYAlignment = Enum.TextYAlignment.Top
@@ -125,7 +125,7 @@ function CreateNotification(Options)
         TextButton.Parent = Dismiss
         TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         TextButton.Position = UDim2.new(0.05, 0, 0.75, 0)
-        TextButton.Size = UDim2.new(0, 280, 0, 25)
+        TextButton.Size = UDim2.new(0, 330, 0, 30)
         TextButton.Font = Enum.Font.GothamMedium
         TextButton.Text = Options.Buttons[1].Title or "Dismiss"
         TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -146,8 +146,8 @@ function CreateNotification(Options)
 
     local TweenService = game:GetService("TweenService")
 
-    TweenService:Create(ambientShadow, TweenInfo.new(0.3), {Size = UDim2.new(0, 310, 0, 130)}):Play()  -- Expanding ambient shadow
-    TweenService:Create(Dismiss, TweenInfo.new(0.3), {Size = UDim2.new(0, 300, 0, 120)}):Play()  -- Slide-in for notification
+    TweenService:Create(ambientShadow, TweenInfo.new(0.3), {Size = UDim2.new(0, 360, 0, 160)}):Play()  -- Expanding ambient shadow
+    TweenService:Create(Dismiss, TweenInfo.new(0.3), {Size = UDim2.new(0, 350, 0, 150)}):Play()  -- Slide-in for notification
 
     if not Options.NeverExpire then
         local timeRemaining = Options.Length or 5
