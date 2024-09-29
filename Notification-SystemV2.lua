@@ -1,3 +1,5 @@
+--4
+
 local NotifUI = Instance.new("ScreenGui")
 local Holder = Instance.new("ScrollingFrame")
 local Sorter = Instance.new("UIListLayout")
@@ -10,12 +12,12 @@ Holder.Name = "Holder"
 Holder.Parent = NotifUI
 Holder.Active = true
 Holder.AnchorPoint = Vector2.new(1, 1)
-Holder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Holder.BackgroundTransparency = 1.000
 Holder.BorderSizePixel = 0
-Holder.Position = UDim2.new(1, -10, 1, -20)
+Holder.Position = UDim2.new(1, -10, 1, -20)  -- Closer to right wall
 Holder.Size = UDim2.new(0.3, 0, 1, 0)
 Holder.CanvasSize = UDim2.new(0, 0, 0, 0)
+Holder.ScrollBarThickness = 0  -- Hide scrollbar
 
 Sorter.Name = "Sorter"
 Sorter.Parent = Holder
@@ -64,7 +66,7 @@ function CreateNotification(Options)
     ambientShadow.AnchorPoint = Vector2.new(0.5, 0.5)
     ambientShadow.BackgroundTransparency = 1.000
     ambientShadow.BorderSizePixel = 0
-    ambientShadow.Position = UDim2.new(0.91525954, 0, 0.936809778, 0)
+    ambientShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
     ambientShadow.Size = UDim2.new(0, 0, 0, 0)
     ambientShadow.Image = "rbxassetid://1316045217"
     ambientShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
@@ -83,7 +85,6 @@ function CreateNotification(Options)
     UICorner.Parent = Dismiss
 
     TextLabel.Parent = Dismiss
-    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel.BackgroundTransparency = 1.000
     TextLabel.Position = UDim2.new(0.05, 0, 0.05, 0)
     TextLabel.Size = UDim2.new(0, 330, 0, 30)
@@ -107,7 +108,6 @@ function CreateNotification(Options)
     ProgressFill.Size = UDim2.new(0, 0, 1, 0)
 
     TextLabel_2.Parent = Dismiss
-    TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel_2.BackgroundTransparency = 1.000
     TextLabel_2.Position = UDim2.new(0.05, 0, 0.4, 0)
     TextLabel_2.Size = UDim2.new(0, 330, 0, 60)
@@ -117,13 +117,12 @@ function CreateNotification(Options)
     TextLabel_2.TextSize = 16.000
     TextLabel_2.TextWrapped = true
     TextLabel_2.TextXAlignment = Enum.TextXAlignment.Left
-    TextLabel_2.TextYAlignment = Enum.TextYAlignment.Top
 
     if Options.Buttons[1] then
         TextButton.Parent = Dismiss
         TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         TextButton.Position = UDim2.new(0.05, 0, 0.75, 0)
-        TextButton.Size = UDim2.new(0, 330, 0, 30)
+        TextButton.Size = UDim2.new(0, 330, 0, 30)  -- Centered button
         TextButton.Font = Enum.Font.GothamMedium
         TextButton.Text = Options.Buttons[1].Title or "Dismiss"
         TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -136,7 +135,7 @@ function CreateNotification(Options)
             end
             if Options.Buttons[1].ClosesUI then
                 Dismiss:Destroy()
-                AmbientShadow:Destroy()
+                ambientShadow:Destroy()  -- Close shadow immediately
             end
         end)
     end
