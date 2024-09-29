@@ -129,7 +129,7 @@ function CreateNotification(Options)
     if Options.Buttons[1] then
         TextButton.Parent = Dismiss
         TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TextButton.Position = UDim2.new(0, 0, 0.75, 0)  -- Move button far left
+        TextButton.Position = UDim2.new(0, 0, 0.5, 0)  -- Move button far left
         TextButton.Size = UDim2.new(0, 290, 0, 30)
         TextButton.Font = Enum.Font.GothamMedium
         TextButton.Text = Options.Buttons[1].Title or "Dismiss"
