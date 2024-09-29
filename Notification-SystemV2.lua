@@ -34,11 +34,11 @@ local function SetDefault(v1, v2)
 end
 
 local function UpdateNotifications()
-    local currentPosition = 0
-    for i, notification in ipairs(Holder:GetChildren()) do
+    local notifications = Holder:GetChildren()
+    for i = #notifications, 1, -1 do
+        local notification = notifications[i]
         if notification:IsA("ImageLabel") then
-            notification.Position = UDim2.new(0.5, 0, 1, -(currentPosition + 160))
-            currentPosition = currentPosition + 170
+            notification.LayoutOrder = i
         end
     end
 end
@@ -144,6 +144,7 @@ function CreateNotification(Options)
             if Options.Buttons[1].ClosesUI then
                 Dismiss:Destroy()
                 ambientShadow:Destroy()
+                UpdateNotifications()
             end
         end)
     end
@@ -170,4 +171,4 @@ function CreateNotification(Options)
     UpdateNotifications()
 end
 
-return CreateNotification 
+return CreateNotification
