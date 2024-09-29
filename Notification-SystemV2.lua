@@ -13,7 +13,7 @@ Holder.AnchorPoint = Vector2.new(1, 0)
 Holder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Holder.BackgroundTransparency = 1.000
 Holder.BorderSizePixel = 0
-Holder.Position = UDim2.new(1, -10, 0, 0)
+Holder.Position = UDim2.new(1, -5, 0, 0)
 Holder.Size = UDim2.new(0.3, 0, 1, 0)
 Holder.CanvasSize = UDim2.new(0, 0, 0, 0)
 
@@ -63,7 +63,7 @@ function CreateNotification(Options)
     Dismiss.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     Dismiss.BackgroundTransparency = 0.300
     Dismiss.BorderSizePixel = 0
-    Dismiss.Position = UDim2.new(1, 300, 0.8, 0)
+    Dismiss.Position = UDim2.new(1, 350, 0.75, 0)
     Dismiss.Size = UDim2.new(0, 350, 0, 150)
     Dismiss.Visible = false
 
@@ -131,7 +131,7 @@ function CreateNotification(Options)
 
     local TweenService = game:GetService("TweenService")
     
-    TweenService:Create(Dismiss, TweenInfo.new(0.5), {Position = UDim2.new(1, -20, 0.8, 0)}):Play()
+    TweenService:Create(Dismiss, TweenInfo.new(0.5), {Position = UDim2.new(1, -15, 0.75, 0)}):Play()
 
     if not Options.NeverExpire then
         local timeRemaining = Options.Length or 5
