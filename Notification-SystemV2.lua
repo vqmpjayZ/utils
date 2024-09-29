@@ -1,5 +1,3 @@
---4
-
 local NotifUI = Instance.new("ScreenGui")
 local Holder = Instance.new("ScrollingFrame")
 local Sorter = Instance.new("UIListLayout")
@@ -35,6 +33,20 @@ local function SetDefault(v1, v2)
     return v3
 end
 
+local function UpdateNotifications()
+    for i, notification in ipairs(Holder:GetChildren()) do
+        if notification:IsA("ImageLabel") then
+            notification:TweenPosition(
+                UDim2.new(0.5, 0, 1, -((i - 1) * 170 + 20)),  -- Adjust to prevent overlap
+                Enum.EasingDirection.Out,
+                Enum.EasingStyle.Sine,
+                0.5,
+                true
+            )
+        end
+    end
+end
+
 function CreateNotification(Options)
     local Default = {
         Buttons = {
@@ -66,7 +78,7 @@ function CreateNotification(Options)
     ambientShadow.AnchorPoint = Vector2.new(0.5, 0.5)
     ambientShadow.BackgroundTransparency = 1.000
     ambientShadow.BorderSizePixel = 0
-    ambientShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ambientShadow.Position = UDim2.new(0.5, 0, 1, -20)
     ambientShadow.Size = UDim2.new(0, 0, 0, 0)
     ambientShadow.Image = "rbxassetid://1316045217"
     ambientShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
@@ -121,8 +133,8 @@ function CreateNotification(Options)
     if Options.Buttons[1] then
         TextButton.Parent = Dismiss
         TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TextButton.Position = UDim2.new(0.05, 0, 0.75, 0)
-        TextButton.Size = UDim2.new(0, 330, 0, 30)  -- Centered button
+        TextButton.Position = UDim2.new(0.02, 0, 0.75, 0)  -- Moved button to the left
+        TextButton.Size = UDim2.new(0, 300, 0, 30)
         TextButton.Font = Enum.Font.GothamMedium
         TextButton.Text = Options.Buttons[1].Title or "Dismiss"
         TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -155,8 +167,11 @@ function CreateNotification(Options)
             TweenService:Create(ambientShadow, TweenInfo.new(0.2), {Size = UDim2.new(0, 0, 0, 0)}):Play()
             task.wait(0.2)
             Dismiss:Destroy()
+            UpdateNotifications()
         end)
     end
+
+    UpdateNotifications()  -- Move other notifications up
 end
 
 return CreateNotification
