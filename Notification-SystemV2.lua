@@ -34,15 +34,11 @@ local function SetDefault(v1, v2)
 end
 
 local function UpdateNotifications()
+    local currentPosition = 0  -- Keep track of Y position for stacking
     for i, notification in ipairs(Holder:GetChildren()) do
         if notification:IsA("ImageLabel") then
-            notification:TweenPosition(
-                UDim2.new(0.5, 0, 1, -((i - 1) * 170 + 20)),  -- Adjust to prevent overlap
-                Enum.EasingDirection.Out,
-                Enum.EasingStyle.Sine,
-                0.5,
-                true
-            )
+            notification.Position = UDim2.new(0.5, 0, 1, -(currentPosition + 160))  -- Ensure they don't overlap
+            currentPosition = currentPosition + 170  -- Space between each notification
         end
     end
 end
@@ -133,8 +129,8 @@ function CreateNotification(Options)
     if Options.Buttons[1] then
         TextButton.Parent = Dismiss
         TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TextButton.Position = UDim2.new(0.02, 0, 0.75, 0)  -- Moved button to the left
-        TextButton.Size = UDim2.new(0, 300, 0, 30)
+        TextButton.Position = UDim2.new(0, 0, 0.75, 0)  -- Move button far left
+        TextButton.Size = UDim2.new(0, 290, 0, 30)
         TextButton.Font = Enum.Font.GothamMedium
         TextButton.Text = Options.Buttons[1].Title or "Dismiss"
         TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
