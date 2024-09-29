@@ -13,8 +13,8 @@ Holder.AnchorPoint = Vector2.new(1, 0)
 Holder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Holder.BackgroundTransparency = 1.000
 Holder.BorderSizePixel = 0
-Holder.Position = UDim2.new(1, 0, 0, 0)
-Holder.Size = UDim2.new(0.25, 0, 1, 0)
+Holder.Position = UDim2.new(1, -10, 0, 0)
+Holder.Size = UDim2.new(0.3, 0, 1, 0)
 Holder.CanvasSize = UDim2.new(0, 0, 0, 0)
 
 Sorter.Name = "Sorter"
@@ -63,8 +63,8 @@ function CreateNotification(Options)
     Dismiss.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     Dismiss.BackgroundTransparency = 0.300
     Dismiss.BorderSizePixel = 0
-    Dismiss.Position = UDim2.new(0, 0, 0, 0)
-    Dismiss.Size = UDim2.new(0, 262, 0, 132)
+    Dismiss.Position = UDim2.new(1, 300, 0.8, 0)
+    Dismiss.Size = UDim2.new(0, 350, 0, 150)
     Dismiss.Visible = false
 
     UICorner.Parent = Dismiss
@@ -73,7 +73,7 @@ function CreateNotification(Options)
     TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel.BackgroundTransparency = 1.000
     TextLabel.Position = UDim2.new(0.05, 0, 0.05, 0)
-    TextLabel.Size = UDim2.new(0, 194, 0, 29)
+    TextLabel.Size = UDim2.new(0, 300, 0, 29)
     TextLabel.Font = Enum.Font.GothamMedium
     TextLabel.Text = Options.Title
     TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -84,7 +84,7 @@ function CreateNotification(Options)
     TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel_2.BackgroundTransparency = 1.000
     TextLabel_2.Position = UDim2.new(0.05, 0, 0.3, 0)
-    TextLabel_2.Size = UDim2.new(0, 233, 0, 52)
+    TextLabel_2.Size = UDim2.new(0, 300, 0, 52)
     TextLabel_2.Font = Enum.Font.Gotham
     TextLabel_2.Text = Options.Content
     TextLabel_2.TextColor3 = Color3.fromRGB(234, 234, 234)
@@ -110,7 +110,7 @@ function CreateNotification(Options)
         TextButton.Parent = Dismiss
         TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         TextButton.Position = UDim2.new(0.05, 0, 0.7, 0)
-        TextButton.Size = UDim2.new(0, 233, 0, 29)
+        TextButton.Size = UDim2.new(0, 300, 0, 29)
         TextButton.Font = Enum.Font.GothamMedium
         TextButton.Text = Options.Buttons[1].Title or "Dismiss"
         TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -130,6 +130,9 @@ function CreateNotification(Options)
     Dismiss.Visible = true
 
     local TweenService = game:GetService("TweenService")
+    
+    TweenService:Create(Dismiss, TweenInfo.new(0.5), {Position = UDim2.new(1, -20, 0.8, 0)}):Play()
+
     if not Options.NeverExpire then
         local timeRemaining = Options.Length or 5
         TweenService:Create(ProgressFill, TweenInfo.new(timeRemaining, Enum.EasingStyle.Linear), {Size = UDim2.new(1, 0, 1, 0)}):Play()
