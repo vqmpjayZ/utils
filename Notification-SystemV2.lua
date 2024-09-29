@@ -60,7 +60,8 @@ function CreateNotification(Options)
 
     Dismiss.Name = "Notification"
     Dismiss.Parent = Holder
-    Dismiss.BackgroundColor3 = Color3.fromRGB(72, 36, 94)
+    Dismiss.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Dismiss.BackgroundTransparency = 0.300
     Dismiss.BorderSizePixel = 0
     Dismiss.Position = UDim2.new(0, 0, 0, 0)
     Dismiss.Size = UDim2.new(0, 262, 0, 132)
@@ -94,7 +95,7 @@ function CreateNotification(Options)
 
     ProgressBar.Name = "ProgressBar"
     ProgressBar.Parent = Dismiss
-    ProgressBar.BackgroundColor3 = Color3.fromRGB(60, 20, 80)
+    ProgressBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     ProgressBar.BorderSizePixel = 0
     ProgressBar.Position = UDim2.new(0.05, 0, 0.95, 0)
     ProgressBar.Size = UDim2.new(0.9, 0, 0.03, 0)
