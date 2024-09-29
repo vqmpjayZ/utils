@@ -1,5 +1,3 @@
---3
-
 local NotifUI = Instance.new("ScreenGui")
 local Holder = Instance.new("ScrollingFrame")
 local Sorter = Instance.new("UIListLayout")
@@ -11,11 +9,11 @@ NotifUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 Holder.Name = "Holder"
 Holder.Parent = NotifUI
 Holder.Active = true
-Holder.AnchorPoint = Vector2.new(1, 1)  -- Bottom-right anchor
+Holder.AnchorPoint = Vector2.new(1, 1)
 Holder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Holder.BackgroundTransparency = 1.000
 Holder.BorderSizePixel = 0
-Holder.Position = UDim2.new(1, -10, 1, -20)  -- Adjusted to be right against the right edge
+Holder.Position = UDim2.new(1, -360, 1, -20)
 Holder.Size = UDim2.new(0.3, 0, 1, 0)
 Holder.CanvasSize = UDim2.new(0, 0, 0, 0)
 
@@ -77,9 +75,9 @@ function CreateNotification(Options)
     Dismiss.Name = "Notification"
     Dismiss.Parent = ambientShadow
     Dismiss.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    Dismiss.BackgroundTransparency = 0.2  -- Set to a slightly transparent background
+    Dismiss.BackgroundTransparency = 0.2
     Dismiss.BorderSizePixel = 0
-    Dismiss.Size = UDim2.new(0, 350, 0, 150)  -- Increased size
+    Dismiss.Size = UDim2.new(0, 350, 0, 150)
     Dismiss.Visible = false
 
     UICorner.Parent = Dismiss
@@ -146,8 +144,8 @@ function CreateNotification(Options)
 
     local TweenService = game:GetService("TweenService")
 
-    TweenService:Create(ambientShadow, TweenInfo.new(0.3), {Size = UDim2.new(0, 360, 0, 160)}):Play()  -- Expanding ambient shadow
-    TweenService:Create(Dismiss, TweenInfo.new(0.3), {Size = UDim2.new(0, 350, 0, 150)}):Play()  -- Slide-in for notification
+    TweenService:Create(ambientShadow, TweenInfo.new(0.3), {Size = UDim2.new(0, 360, 0, 160)}):Play()
+    TweenService:Create(Dismiss, TweenInfo.new(0.3), {Size = UDim2.new(0, 350, 0, 150)}):Play()
 
     if not Options.NeverExpire then
         local timeRemaining = Options.Length or 5
