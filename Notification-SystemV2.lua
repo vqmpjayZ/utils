@@ -134,12 +134,12 @@ local function CreateNotification(title, text, duration, buttonText, buttonCallb
         textFadeOutTween:Play()
         progressFadeOutTween:Play()
 
-        if Button then
+        if Button and Button.Parent then
             local buttonFadeOutTween = TweenService:Create(Button, fadeTweenInfo, {BackgroundTransparency = 1, TextTransparency = 1})
             buttonFadeOutTween:Play()
         end
         
-        fadeOutTween.Completed:Wait()
+        task.wait(fadeTweenInfo.Time)
         if Notification.Parent then
             Notification:Destroy()
         end
