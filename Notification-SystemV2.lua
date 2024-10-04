@@ -117,7 +117,7 @@ local function CreateNotification(title, text, duration, buttonText, buttonCallb
     Notification.Parent = NotificationFrame
 
     local fadeTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-    local fadeTween = TweenService:Create(Notification, fadeTweenInfo, {BackgroundTransparency = 0})
+    local fadeTween = TweenService:Create(Notification, fadeTweenInfo, {BackgroundTransparency = 0.1})
     local titleFadeTween = TweenService:Create(TitleLabel, fadeTweenInfo, {TextTransparency = 0})
     local textFadeTween = TweenService:Create(TextLabel, fadeTweenInfo, {TextTransparency = 0})
     local progressFadeTween = TweenService:Create(ProgressBar, fadeTweenInfo, {BackgroundTransparency = 0})
@@ -128,7 +128,7 @@ local function CreateNotification(title, text, duration, buttonText, buttonCallb
     progressFadeTween:Play()
 
     if Button then
-        local buttonFadeTween = TweenService:Create(Button, fadeTweenInfo, {BackgroundTransparency = 0, TextTransparency = 0})
+        local buttonFadeTween = TweenService:Create(Button, fadeTweenInfo, {BackgroundTransparency = 0.1, TextTransparency = 0})
         buttonFadeTween:Play()
     end
 
