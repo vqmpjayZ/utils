@@ -1,3 +1,18 @@
+--[[ Vaddirfts notification system v2 (dsc.gg/vadriftz)
+TUTORIAL:
+Notification w/out a button:
+local NotificationSystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/vqmpjayZ/utils/refs/heads/main/Notification-SystemV2.lua"))()  <-- boot up the notification system
+
+NotificationSystem:Notify("Title", "This is a notification message.", 5) <-- "Title" is the title of the notification; "This is a notification message." <-- is the notifications text; 5 <-- length of the notification
+
+Notification w/ a button:
+local NotificationSystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/vqmpjayZ/utils/refs/heads/main/Notification-SystemV2.lua"))()
+
+NotificationSystem:Notify("Title", "This is a notification with a button.", 10, "Click me", function() <-- "Click me" is the button and its text
+    print("Button was clicked!") <-- the script that gets executed when the button is clicked
+end)
+--]]
+
 local NotificationSystem = {}
 
 local TweenService = game:GetService("TweenService")
@@ -74,13 +89,13 @@ local function CreateNotification(title, text, duration, buttonText, buttonCallb
         Button = Instance.new("TextButton")
         Button.Name = "Button"
         Button.Size = UDim2.new(0, 200, 0, 25)
-        Button.Position = UDim2.new(0.5, -100, 1, -30)  -- Centered
+        Button.Position = UDim2.new(0.5, -100, 1, -30)
         Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Button.BackgroundTransparency = 1  -- Start fully transparent
+        Button.BackgroundTransparency = 1
         Button.BorderSizePixel = 0
         Button.Font = Enum.Font.Gotham
         Button.TextColor3 = Color3.fromRGB(0, 0, 0)
-        Button.TextTransparency = 1  -- Start fully transparent
+        Button.TextTransparency = 1
         Button.TextSize = 12
         Button.Text = buttonText
         Button.Parent = Notification
@@ -116,12 +131,10 @@ local function CreateNotification(title, text, duration, buttonText, buttonCallb
         buttonFadeTween:Play()
     end
 
-    -- Progress bar animation
     local progressTweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
     local progressTween = TweenService:Create(ProgressBar, progressTweenInfo, {Size = UDim2.new(0, 0, 0, 2)})
     progressTween:Play()
 
-    -- Fade-out and destroy
     task.delay(duration, function()
         if not Notification.Parent then return end
         local fadeOutTween = TweenService:Create(Notification, fadeTweenInfo, {BackgroundTransparency = 1})
