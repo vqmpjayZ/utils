@@ -1,5 +1,5 @@
 --[[ 
-Vadirfts notification system v2 (dsc.gg/vadriftz)
+Vadrifts notification system v2 (dsc.gg/vadriftz)
 
 Example usage:
 Notification w/out a button:
