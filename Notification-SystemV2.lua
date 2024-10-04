@@ -116,7 +116,6 @@ local function CreateNotification(title, text, duration, buttonText, buttonCallb
 
     Notification.Parent = NotificationFrame
 
-    -- Fade-in animation
     local fadeTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
     local fadeTween = TweenService:Create(Notification, fadeTweenInfo, {BackgroundTransparency = 0})
     local titleFadeTween = TweenService:Create(TitleLabel, fadeTweenInfo, {TextTransparency = 0})
