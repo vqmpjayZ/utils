@@ -1,3 +1,4 @@
+--slide in test
 local NotificationSystem = {}
 
 local TweenService = game:GetService("TweenService")
@@ -65,20 +66,24 @@ local function CreateNotification(title, text, duration)
     ProgressBar.BorderSizePixel = 0
     ProgressBar.Parent = Notification
 
+    -- Set initial position off-screen
     Notification.Position = UDim2.new(1, 0, 0, 0)
-    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(Notification, tweenInfo, {Position = UDim2.new(0, 0, 0, 0)})
-    tween:Play()
+    
+    -- Slide-in animation
+    local slideTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+    local slideTween = TweenService:Create(Notification, slideTweenInfo, {Position = UDim2.new(0, 0, 0, 0)})
+    slideTween:Play()
 
+    -- Progress bar animation
     local progressTweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
     local progressTween = TweenService:Create(ProgressBar, progressTweenInfo, {Size = UDim2.new(0, 0, 0, 2)})
     progressTween:Play()
 
+    -- Slide-out and destroy
     task.delay(duration, function()
-        local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-        local tween = TweenService:Create(Notification, tweenInfo, {Position = UDim2.new(1, 0, 0, 0)})
-        tween:Play()
-        tween.Completed:Wait()
+        local slideOutTween = TweenService:Create(Notification, slideTweenInfo, {Position = UDim2.new(1, 0, 0, 0)})
+        slideOutTween:Play()
+        slideOutTween.Completed:Wait()
         Notification:Destroy()
     end)
 end
