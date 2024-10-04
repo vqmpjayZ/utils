@@ -5,7 +5,7 @@ Example usage:
 Notification w/out a button:
 local NotificationSystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/vqmpjayZ/utils/refs/heads/main/Notification-SystemV2.lua"))()  <-- boot up the notification system
 
-NotificationSystem:Notify("Title", "This is a notification message.", 5) <-- "Title" is the title of the notification; "This is a notification message." <-- is the notifications text; 5 <-- length of the notification
+NotificationSystem:Notify("Title", "This is a notification.", 5) <-- "Title" is the title of the notification; "This is a notification message." <-- is the notifications text; 5 <-- length of the notification
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Notification w/ a button:
 local NotificationSystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/vqmpjayZ/utils/refs/heads/main/Notification-SystemV2.lua"))()
