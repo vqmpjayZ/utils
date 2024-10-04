@@ -20,10 +20,10 @@ UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout.Padding = UDim.new(0, 5)
 UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
 
-local function CreateNotification(title, text, duration)
+local function CreateNotification(title, text, duration, buttonText, buttonCallback)
     local Notification = Instance.new("Frame")
     Notification.Name = "Notification"
-    Notification.Size = UDim2.new(1, 0, 0, 70)
+    Notification.Size = UDim2.new(1, 0, 0, buttonText and 90 or 70)
     Notification.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Notification.BackgroundTransparency = 1
     Notification.BorderSizePixel = 0
@@ -47,7 +47,7 @@ local function CreateNotification(title, text, duration)
 
     local TextLabel = Instance.new("TextLabel")
     TextLabel.Name = "Text"
-    TextLabel.Size = UDim2.new(1, -10, 1, -35)
+    TextLabel.Size = UDim2.new(1, -10, 0, buttonText and 35 or 45)
     TextLabel.Position = UDim2.new(0, 5, 0, 30)
     TextLabel.BackgroundTransparency = 1
     TextLabel.Font = Enum.Font.Gotham
@@ -69,6 +69,31 @@ local function CreateNotification(title, text, duration)
     ProgressBar.BorderSizePixel = 0
     ProgressBar.Parent = Notification
 
+    if buttonText then
+        local Button = Instance.new("TextButton")
+        Button.Name = "Button"
+        Button.Size = UDim2.new(0, 100, 0, 25)
+        Button.Position = UDim2.new(0.5, -50, 1, -30)
+        Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        Button.BorderSizePixel = 0
+        Button.Font = Enum.Font.Gotham
+        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Button.TextSize = 12
+        Button.Text = buttonText
+        Button.Parent = Notification
+
+        local ButtonUICorner = Instance.new("UICorner")
+        ButtonUICorner.CornerRadius = UDim.new(0, 5)
+        ButtonUICorner.Parent = Button
+
+        Button.MouseButton1Click:Connect(function()
+            if buttonCallback then
+                buttonCallback()
+            end
+            Notification:Destroy()
+        end)
+    end
+
     Notification.Parent = NotificationFrame
 
     local fadeTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
@@ -87,6 +112,7 @@ local function CreateNotification(title, text, duration)
     progressTween:Play()
 
     task.delay(duration, function()
+        if not Notification.Parent then return end
         local fadeOutTween = TweenService:Create(Notification, fadeTweenInfo, {BackgroundTransparency = 1})
         local titleFadeOutTween = TweenService:Create(TitleLabel, fadeTweenInfo, {TextTransparency = 1})
         local textFadeOutTween = TweenService:Create(TextLabel, fadeTweenInfo, {TextTransparency = 1})
@@ -98,12 +124,14 @@ local function CreateNotification(title, text, duration)
         progressFadeOutTween:Play()
         
         fadeOutTween.Completed:Wait()
-        Notification:Destroy()
+        if Notification.Parent then
+            Notification:Destroy()
+        end
     end)
 end
 
-function NotificationSystem:Notify(title, text, duration)
-    CreateNotification(title, text, duration)
+function NotificationSystem:Notify(title, text, duration, buttonText, buttonCallback)
+    CreateNotification(title, text, duration, buttonText, buttonCallback)
 end
 
 getgenv().NotificationSystem = NotificationSystem
