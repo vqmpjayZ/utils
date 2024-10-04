@@ -23,7 +23,7 @@ UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
 local function CreateNotification(title, text, duration, buttonText, buttonCallback)
     local Notification = Instance.new("Frame")
     Notification.Name = "Notification"
-    Notification.Size = UDim2.new(1, 0, 0, buttonText and 90 or 70)
+    Notification.Size = UDim2.new(1, 0, 0, buttonText and 90 or 70) -- Increase height if button is present
     Notification.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Notification.BackgroundTransparency = 1
     Notification.BorderSizePixel = 0
@@ -72,12 +72,12 @@ local function CreateNotification(title, text, duration, buttonText, buttonCallb
     if buttonText then
         local Button = Instance.new("TextButton")
         Button.Name = "Button"
-        Button.Size = UDim2.new(0, 100, 0, 25)
-        Button.Position = UDim2.new(0.5, -50, 1, -30)
-        Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        Button.Size = UDim2.new(0, 200, 0, 25)  -- Increased width to 200
+        Button.Position = UDim2.new(0, 10, 1, -30)  -- Moved to the left
+        Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)  -- White background
         Button.BorderSizePixel = 0
         Button.Font = Enum.Font.Gotham
-        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Button.TextColor3 = Color3.fromRGB(0, 0, 0)  -- Black text
         Button.TextSize = 12
         Button.Text = buttonText
         Button.Parent = Notification
@@ -90,12 +90,14 @@ local function CreateNotification(title, text, duration, buttonText, buttonCallb
             if buttonCallback then
                 buttonCallback()
             end
+            -- Close the notification
             Notification:Destroy()
         end)
     end
 
     Notification.Parent = NotificationFrame
 
+    -- Fade-in animation
     local fadeTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
     local fadeTween = TweenService:Create(Notification, fadeTweenInfo, {BackgroundTransparency = 0})
     local titleFadeTween = TweenService:Create(TitleLabel, fadeTweenInfo, {TextTransparency = 0})
@@ -107,12 +109,14 @@ local function CreateNotification(title, text, duration, buttonText, buttonCallb
     textFadeTween:Play()
     progressFadeTween:Play()
 
+    -- Progress bar animation
     local progressTweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
     local progressTween = TweenService:Create(ProgressBar, progressTweenInfo, {Size = UDim2.new(0, 0, 0, 2)})
     progressTween:Play()
 
+    -- Fade-out and destroy
     task.delay(duration, function()
-        if not Notification.Parent then return end
+        if not Notification.Parent then return end -- Check if notification still exists
         local fadeOutTween = TweenService:Create(Notification, fadeTweenInfo, {BackgroundTransparency = 1})
         local titleFadeOutTween = TweenService:Create(TitleLabel, fadeTweenInfo, {TextTransparency = 1})
         local textFadeOutTween = TweenService:Create(TextLabel, fadeTweenInfo, {TextTransparency = 1})
@@ -133,7 +137,5 @@ end
 function NotificationSystem:Notify(title, text, duration, buttonText, buttonCallback)
     CreateNotification(title, text, duration, buttonText, buttonCallback)
 end
-
-getgenv().NotificationSystem = NotificationSystem
 
 return NotificationSystem
