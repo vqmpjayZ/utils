@@ -1,0 +1,16 @@
+local players = game:GetService("Players")
+local user = players.LocalPlayer
+local name = user.Name
+
+local WL = {"vxmpire_jay", "vqmpjay", "askroh145", "meth_eater9000", "yehbjf", "vpmpjay", "ss0b05", "hahahaimagine6", "IlwetIldreamsIl", "0Hater", "ernestocool345", "secob6", "timmywimmycalos", "qm8ty", "happyhax10", "work_filer"}
+
+local WHITELISTED = false
+
+for _, v in pairs(WL) do
+    if name == v then
+        WHITELISTED = true
+        break
+    end
+end
+
+return WHITELISTED
