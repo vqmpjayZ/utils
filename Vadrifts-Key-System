@@ -1,93 +1,112 @@
 local KeySystem = {}
 
-local function createUI(title, note, sideText)
+local function createUI(title, note)
     local screenGui = Instance.new("ScreenGui")
     screenGui.Parent = game.CoreGui
     screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 300, 0, 150)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -75)
-    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.Size = UDim2.new(0, 400, 0, 200)
+    frame.Position = UDim2.new(0.5, -200, 0.5, -100)
+    frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     frame.BorderSizePixel = 0
     frame.Parent = screenGui
 
+    local shadow = Instance.new("ImageLabel")
+    shadow.Size = UDim2.new(1, 47, 1, 47)
+    shadow.Position = UDim2.new(0, -23, 0, -23)
+    shadow.BackgroundTransparency = 1
+    shadow.Image = "rbxassetid://6015897843"
+    shadow.ImageColor3 = Color3.new(0, 0, 0)
+    shadow.ImageTransparency = 0.5
+    shadow.Parent = frame
+
     local uiCorner = Instance.new("UICorner")
-    uiCorner.CornerRadius = UDim.new(0, 10)
+    uiCorner.CornerRadius = UDim.new(0, 6)
     uiCorner.Parent = frame
 
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Size = UDim2.new(1, -20, 0, 30)
     titleLabel.Position = UDim2.new(0, 10, 0, 10)
     titleLabel.BackgroundTransparency = 1
-    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Font = Enum.Font.GothamBold
     titleLabel.TextColor3 = Color3.new(1, 1, 1)
-    titleLabel.TextSize = 18
+    titleLabel.TextSize = 22
     titleLabel.Text = title
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = frame
 
-    local noteLabel = Instance.new("TextLabel")
-    noteLabel.Size = UDim2.new(1, -20, 0, 20)
-    noteLabel.Position = UDim2.new(0, 10, 0, 40)
-    noteLabel.BackgroundTransparency = 1
-    noteLabel.Font = Enum.Font.SourceSans
-    noteLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
-    noteLabel.TextSize = 14
-    noteLabel.Text = note
-    noteLabel.Parent = frame
+    local subtitleLabel = Instance.new("TextLabel")
+    subtitleLabel.Size = UDim2.new(1, -20, 0, 20)
+    subtitleLabel.Position = UDim2.new(0, 10, 0, 40)
+    subtitleLabel.BackgroundTransparency = 1
+    subtitleLabel.Font = Enum.Font.Gotham
+    subtitleLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+    subtitleLabel.TextSize = 16
+    subtitleLabel.Text = "Key System"
+    subtitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    subtitleLabel.Parent = frame
 
     local keyBox = Instance.new("TextBox")
-    keyBox.Size = UDim2.new(1, -20, 0, 30)
-    keyBox.Position = UDim2.new(0, 10, 0, 70)
-    keyBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    keyBox.Size = UDim2.new(0.6, -15, 0, 35)
+    keyBox.Position = UDim2.new(0, 10, 0, 80)
+    keyBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
     keyBox.BorderSizePixel = 0
-    keyBox.Font = Enum.Font.SourceSans
+    keyBox.Font = Enum.Font.Gotham
     keyBox.TextColor3 = Color3.new(1, 1, 1)
     keyBox.TextSize = 14
     keyBox.PlaceholderText = "Enter key here..."
     keyBox.Parent = frame
 
     local keyBoxCorner = Instance.new("UICorner")
-    keyBoxCorner.CornerRadius = UDim.new(0, 5)
+    keyBoxCorner.CornerRadius = UDim.new(0, 6)
     keyBoxCorner.Parent = keyBox
 
+    local hideButton = Instance.new("TextButton")
+    hideButton.Size = UDim2.new(0.35, 0, 0, 35)
+    hideButton.Position = UDim2.new(0.65, 0, 0, 80)
+    hideButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    hideButton.BorderSizePixel = 0
+    hideButton.Font = Enum.Font.Gotham
+    hideButton.TextColor3 = Color3.new(1, 1, 1)
+    hideButton.TextSize = 14
+    hideButton.Text = "Hide/Unhide Key"
+    hideButton.Parent = frame
+
+    local hideButtonCorner = Instance.new("UICorner")
+    hideButtonCorner.CornerRadius = UDim.new(0, 6)
+    hideButtonCorner.Parent = hideButton
+
+    local noteLabel = Instance.new("TextLabel")
+    noteLabel.Size = UDim2.new(0.35, 0, 0, 60)
+    noteLabel.Position = UDim2.new(0.65, 0, 0, 125)
+    noteLabel.BackgroundTransparency = 1
+    noteLabel.Font = Enum.Font.Gotham
+    noteLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+    noteLabel.TextSize = 14
+    noteLabel.Text = note
+    noteLabel.TextWrapped = true
+    noteLabel.TextXAlignment = Enum.TextXAlignment.Left
+    noteLabel.TextYAlignment = Enum.TextYAlignment.Top
+    noteLabel.Parent = frame
+
     local submitButton = Instance.new("TextButton")
-    submitButton.Size = UDim2.new(0, 100, 0, 30)
-    submitButton.Position = UDim2.new(0.5, -50, 1, -40)
+    submitButton.Size = UDim2.new(0.6, -15, 0, 35)
+    submitButton.Position = UDim2.new(0, 10, 0, 125)
     submitButton.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
     submitButton.BorderSizePixel = 0
-    submitButton.Font = Enum.Font.SourceSansBold
+    submitButton.Font = Enum.Font.GothamBold
     submitButton.TextColor3 = Color3.new(1, 1, 1)
     submitButton.TextSize = 14
     submitButton.Text = "Submit"
     submitButton.Parent = frame
 
     local submitButtonCorner = Instance.new("UICorner")
-    submitButtonCorner.CornerRadius = UDim.new(0, 5)
+    submitButtonCorner.CornerRadius = UDim.new(0, 6)
     submitButtonCorner.Parent = submitButton
 
-    local sideTextLabel = Instance.new("TextLabel")
-    sideTextLabel.Size = UDim2.new(1, -20, 0, 20)
-    sideTextLabel.Position = UDim2.new(0, 10, 1, -20)
-    sideTextLabel.BackgroundTransparency = 1
-    sideTextLabel.Font = Enum.Font.SourceSansItalic
-    sideTextLabel.TextColor3 = Color3.new(0.7, 0.7, 0.7)
-    sideTextLabel.TextSize = 12
-    sideTextLabel.Text = sideText
-    sideTextLabel.Parent = frame
-
-    local closeButton = Instance.new("TextButton")
-    closeButton.Size = UDim2.new(0, 20, 0, 20)
-    closeButton.Position = UDim2.new(1, -25, 0, 5)
-    closeButton.BackgroundTransparency = 1
-    closeButton.Font = Enum.Font.SourceSansBold
-    closeButton.TextColor3 = Color3.new(1, 1, 1)
-    closeButton.TextSize = 14
-    closeButton.Text = "X"
-    closeButton.Parent = frame
-
-    closeButton.MouseButton1Click:Connect(function()
-        screenGui:Destroy()
+    hideButton.MouseButton1Click:Connect(function()
+        keyBox.TextTransparency = keyBox.TextTransparency == 0 and 1 or 0
     end)
 
     return screenGui, keyBox, submitButton
@@ -100,7 +119,16 @@ function KeySystem.new(settings)
 end
 
 function KeySystem:Init()
-    local gui, keyBox, submitButton = createUI(self.settings.Title, self.settings.Note, self.settings.SideText)
+    local gui, keyBox, submitButton = createUI(self.settings.Title, self.settings.Note)
+
+    local function shakeEffect()
+        local originalPosition = gui.Frame.Position
+        for i = 1, 5 do
+            gui.Frame.Position = originalPosition + UDim2.new(0, math.random(-5, 5), 0, math.random(-5, 5))
+            wait(0.05)
+        end
+        gui.Frame.Position = originalPosition
+    end
 
     submitButton.MouseButton1Click:Connect(function()
         local enteredKey = keyBox.Text
@@ -109,6 +137,7 @@ function KeySystem:Init()
             self.settings.OnCorrect()
         else
             self.settings.OnIncorrect()
+            shakeEffect()
         end
     end)
 end
