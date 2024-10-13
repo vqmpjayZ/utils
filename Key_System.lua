@@ -1,7 +1,7 @@
 --[[
  __   __   ______     _____     ______     __     ______   ______   ______    
 /\ \ / /  /\  __ \   /\  __-.  /\  == \   /\ \   /\  ___\ /\__  _\ /\  ___\   
-\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \  
+\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \  v2
  \ \__|    \ \_\ \_\  \ \____-  \ \_\ \_\  \ \_\  \ \_\      \ \_\  \/\_____\ 
   \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/ 
                               dsc.gg/vadriftz
@@ -148,17 +148,6 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     closeButton.Text = "X"
     closeButton.Parent = frame
 
-    local TrademarkLabel = Instance.new("TextLabel")
-TrademarkLabel.Size = UDim2.new(0, 100, 0, 20)
-TrademarkLabel.Position = UDim2.new(0, 10, 1, -25)
-TrademarkLabel.BackgroundTransparency = 1
-TrademarkLabel.Font = Enum.Font.Gotham
-TrademarkLabel.TextColor3 = Color3.fromRGB(80, 80, 80)
-TrademarkLabel.TextSize = 12
-TrademarkLabel.Text = "by Vadrifts"
-TrademarkLabel.TextXAlignment = Enum.TextXAlignment.Left
-TrademarkLabell.Parent = frame
-
     local actualText = ""
     local isHidden = false
 
@@ -179,6 +168,17 @@ TrademarkLabell.Parent = frame
             hideButton.ImageRectOffset = Vector2.new(564, 564)
         end
     end)
+
+     local TrademarkLabel = Instance.new("TextLabel")
+     TrademarkLabel.Size = UDim2.new(0, 100, 0, 20)
+     TrademarkLabel.Position = UDim2.new(0, 10, 1, -25)
+     TrademarkLabel.BackgroundTransparency = 1
+     TrademarkLabel.Font = Enum.Font.Gotham
+     TrademarkLabel.TextColor3 = Color3.fromRGB(80, 80, 80)
+     TrademarkLabel.TextSize = 12
+     TrademarkLabel.Text = "by Vadrifts"
+     TrademarkLabel.TextXAlignment = Enum.TextXAlignment.Left
+     TrademarkLabell.Parent = frame
 
     clearButton.MouseButton1Click:Connect(function()
         actualText = ""
