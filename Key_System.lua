@@ -8,7 +8,7 @@ local function createUI(title, note)
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 500, 0, 180)
     frame.Position = UDim2.new(0.5, -250, 0.5, -90)
-    frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 0
     frame.BackgroundTransparency = 1
     frame.Parent = screenGui
@@ -60,7 +60,7 @@ local function createUI(title, note)
     keyLabel.Parent = frame
 
     local keyBox = Instance.new("TextBox")
-    keyBox.Size = UDim2.new(0.9, -15, 0, 35)
+    keyBox.Size = UDim2.new(0.65, -15, 0, 35)
     keyBox.Position = UDim2.new(0, 10, 0, 95)
     keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     keyBox.BorderSizePixel = 0
@@ -90,7 +90,7 @@ local function createUI(title, note)
 
     local noteTitle = Instance.new("TextLabel")
     noteTitle.Size = UDim2.new(0, 50, 0, 20)
-    noteTitle.Position = UDim2.new(0, 10, 0, 140)
+    noteTitle.Position = UDim2.new(0.65, 10, 0, 70)
     noteTitle.BackgroundTransparency = 1
     noteTitle.Font = Enum.Font.GothamBold
     noteTitle.TextColor3 = Color3.fromRGB(100, 100, 100)
@@ -100,8 +100,8 @@ local function createUI(title, note)
     noteTitle.Parent = frame
 
     local noteLabel = Instance.new("TextLabel")
-    noteLabel.Size = UDim2.new(0.9, 0, 0, 20)
-    noteLabel.Position = UDim2.new(0, 10, 0, 160)
+    noteLabel.Size = UDim2.new(0.35, -20, 0, 60)
+    noteLabel.Position = UDim2.new(0.65, 10, 0, 95)
     noteLabel.BackgroundTransparency = 1
     noteLabel.Font = Enum.Font.Gotham
     noteLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
@@ -109,21 +109,18 @@ local function createUI(title, note)
     noteLabel.Text = note
     noteLabel.TextWrapped = true
     noteLabel.TextXAlignment = Enum.TextXAlignment.Left
+    noteLabel.TextYAlignment = Enum.TextYAlignment.Top
     noteLabel.Parent = frame
 
     local closeButton = Instance.new("TextButton")
     closeButton.Size = UDim2.new(0, 30, 0, 30)
     closeButton.Position = UDim2.new(1, -35, 0, 5)
-    closeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    closeButton.BackgroundTransparency = 1
     closeButton.Font = Enum.Font.GothamBold
     closeButton.TextColor3 = Color3.new(1, 1, 1)
-    closeButton.TextSize = 14
+    closeButton.TextSize = 20
     closeButton.Text = "X"
     closeButton.Parent = frame
-
-    local closeButtonCorner = Instance.new("UICorner")
-    closeButtonCorner.CornerRadius = UDim.new(0, 6)
-    closeButtonCorner.Parent = closeButton
 
     local isHidden = false
     hideButton.MouseButton1Click:Connect(function()
@@ -163,8 +160,8 @@ function KeySystem:Init()
 
     local function shakeEffect()
         local originalPosition = gui.Frame.Position
-        for i = 1, 5 do
-            gui.Frame.Position = originalPosition + UDim2.new(0, math.random(-5, 5), 0, math.random(-5, 5))
+        for i = 1, 3 do
+            gui.Frame.Position = originalPosition + UDim2.new(0, math.random(-3, 3), 0, math.random(-3, 3))
             wait(0.05)
         end
         gui.Frame.Position = originalPosition
