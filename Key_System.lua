@@ -1,4 +1,4 @@
-local KeySystem = {} --test
+local KeySystem = {}
 
 local function createUI(title, note, onCorrect, onIncorrect, key)
     local screenGui = Instance.new("ScreenGui")
@@ -14,7 +14,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
 
     local shadow = Instance.new("ImageLabel")
     shadow.Size = UDim2.new(1, 39, 1, 39)
-    shadow.Position = UDim2.new(0, -5, 0, -17)
+    shadow.Position = UDim2.new(0, -10, 0, -15)
     shadow.BackgroundTransparency = 1
     shadow.Image = "rbxassetid://6015897843"
     shadow.ImageColor3 = Color3.new(0, 0, 0)
@@ -74,11 +74,9 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     keyBoxContainer.BorderSizePixel = 0
     keyBoxContainer.Parent = frame
 
-    local keyBoxStroke = Instance.new("UIStroke")
-    keyBoxStroke.Color = Color3.fromRGB(255, 255, 255)
-    keyBoxStroke.Thickness = 1
-    keyBoxStroke.Transparency = 0.9
-    keyBoxStroke.Parent = keyBoxContainer
+    local keyBoxCorner = Instance.new("UICorner")
+    keyBoxCorner.CornerRadius = UDim.new(0, 5)
+    keyBoxCorner.Parent = keyBoxContainer
 
     local keyBox = Instance.new("TextBox")
     keyBox.Size = UDim2.new(1, 0, 1, 0)
@@ -191,7 +189,6 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     keyBox.FocusLost:Connect(function(enterPressed)
         actualText = keyBox.Text
         updateVisibleText()
-        
         if enterPressed then
             if actualText == key then
                 game.Players.LocalPlayer:SetAttribute("SavedKey", actualText)
@@ -212,7 +209,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
         screenGui:Destroy()
     end)
 
-    fadeEffect(frame, 1, 0)
+    fadeEffect(frame, 1, 0)  -- Add in-animation here
 
     return screenGui, keyBox, closeButton, function() return actualText end
 end
