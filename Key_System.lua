@@ -11,7 +11,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 0
     frame.Parent = screenGui
-
+--[[
     local shadow = Instance.new("ImageLabel")
     shadow.Size = UDim2.new(1, 39, 1, 39)
     shadow.Position = UDim2.new(0, -10, 0, -15)
@@ -24,7 +24,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     local uiCorner = Instance.new("UICorner")
     uiCorner.CornerRadius = UDim.new(0, 6)
     uiCorner.Parent = frame
-
+]]
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Size = UDim2.new(1, -20, 0, 22)
     titleLabel.Position = UDim2.new(0, 10, 0, 10)
