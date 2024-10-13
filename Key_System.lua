@@ -10,6 +10,7 @@ local function createUI(title, note)
     frame.Position = UDim2.new(0.5, -250, 0.5, -90)
     frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     frame.BorderSizePixel = 0
+    frame.BackgroundTransparency = 1
     frame.Parent = screenGui
 
     local shadow = Instance.new("ImageLabel")
@@ -47,9 +48,20 @@ local function createUI(title, note)
     subtitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     subtitleLabel.Parent = frame
 
+    local keyLabel = Instance.new("TextLabel")
+    keyLabel.Size = UDim2.new(0, 50, 0, 20)
+    keyLabel.Position = UDim2.new(0, 10, 0, 70)
+    keyLabel.BackgroundTransparency = 1
+    keyLabel.Font = Enum.Font.Gotham
+    keyLabel.TextColor3 = Color3.fromRGB(100, 100, 100)
+    keyLabel.TextSize = 14
+    keyLabel.Text = "Key"
+    keyLabel.TextXAlignment = Enum.TextXAlignment.Left
+    keyLabel.Parent = frame
+
     local keyBox = Instance.new("TextBox")
-    keyBox.Size = UDim2.new(0.7, -15, 0, 35)
-    keyBox.Position = UDim2.new(0, 10, 0, 70)
+    keyBox.Size = UDim2.new(0.9, -15, 0, 35)
+    keyBox.Position = UDim2.new(0, 10, 0, 95)
     keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     keyBox.BorderSizePixel = 0
     keyBox.Font = Enum.Font.Gotham
@@ -69,16 +81,27 @@ local function createUI(title, note)
 
     local hideButton = Instance.new("ImageButton")
     hideButton.Size = UDim2.new(0, 20, 0, 20)
-    hideButton.Position = UDim2.new(0.7, -40, 0, 77)
+    hideButton.Position = UDim2.new(0, 60, 0, 70)
     hideButton.BackgroundTransparency = 1
     hideButton.Image = "rbxassetid://3926305904"
     hideButton.ImageRectOffset = Vector2.new(564, 564)
     hideButton.ImageRectSize = Vector2.new(36, 36)
     hideButton.Parent = frame
 
+    local noteTitle = Instance.new("TextLabel")
+    noteTitle.Size = UDim2.new(0, 50, 0, 20)
+    noteTitle.Position = UDim2.new(0, 10, 0, 140)
+    noteTitle.BackgroundTransparency = 1
+    noteTitle.Font = Enum.Font.GothamBold
+    noteTitle.TextColor3 = Color3.fromRGB(100, 100, 100)
+    noteTitle.TextSize = 14
+    noteTitle.Text = "Note"
+    noteTitle.TextXAlignment = Enum.TextXAlignment.Left
+    noteTitle.Parent = frame
+
     local noteLabel = Instance.new("TextLabel")
-    noteLabel.Size = UDim2.new(0.25, 0, 0, 60)
-    noteLabel.Position = UDim2.new(0.75, 0, 0, 70)
+    noteLabel.Size = UDim2.new(0.9, 0, 0, 20)
+    noteLabel.Position = UDim2.new(0, 10, 0, 160)
     noteLabel.BackgroundTransparency = 1
     noteLabel.Font = Enum.Font.Gotham
     noteLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
@@ -86,33 +109,21 @@ local function createUI(title, note)
     noteLabel.Text = note
     noteLabel.TextWrapped = true
     noteLabel.TextXAlignment = Enum.TextXAlignment.Left
-    noteLabel.TextYAlignment = Enum.TextYAlignment.Top
     noteLabel.Parent = frame
 
-    local submitButton = Instance.new("TextButton")
-    submitButton.Size = UDim2.new(0.7, -15, 0, 35)
-    submitButton.Position = UDim2.new(0, 10, 0, 115)
-    submitButton.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
-    submitButton.BorderSizePixel = 0
-    submitButton.Font = Enum.Font.GothamBold
-    submitButton.TextColor3 = Color3.new(1, 1, 1)
-    submitButton.TextSize = 14
-    submitButton.Text = "Submit"
-    submitButton.Parent = frame
-
-    local submitButtonCorner = Instance.new("UICorner")
-    submitButtonCorner.CornerRadius = UDim.new(0, 6)
-    submitButtonCorner.Parent = submitButton
-
     local closeButton = Instance.new("TextButton")
-    closeButton.Size = UDim2.new(0, 20, 0, 20)
-    closeButton.Position = UDim2.new(1, -25, 0, 5)
-    closeButton.BackgroundTransparency = 1
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
+    closeButton.Position = UDim2.new(1, -35, 0, 5)
+    closeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     closeButton.Font = Enum.Font.GothamBold
     closeButton.TextColor3 = Color3.new(1, 1, 1)
     closeButton.TextSize = 14
     closeButton.Text = "X"
     closeButton.Parent = frame
+
+    local closeButtonCorner = Instance.new("UICorner")
+    closeButtonCorner.CornerRadius = UDim.new(0, 6)
+    closeButtonCorner.Parent = closeButton
 
     local isHidden = false
     hideButton.MouseButton1Click:Connect(function()
@@ -130,7 +141,7 @@ local function createUI(title, note)
         screenGui:Destroy()
     end)
 
-    return screenGui, keyBox, submitButton
+    return screenGui, keyBox
 end
 
 function KeySystem.new(settings)
@@ -140,7 +151,15 @@ function KeySystem.new(settings)
 end
 
 function KeySystem:Init()
-    local gui, keyBox, submitButton = createUI(self.settings.Title, self.settings.Note)
+    local gui, keyBox = createUI(self.settings.Title, self.settings.Note)
+
+    local function fadeEffect(obj, goal)
+        local info = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+        local tween = game:GetService("TweenService"):Create(obj, info, {BackgroundTransparency = goal})
+        tween:Play()
+    end
+
+    fadeEffect(gui.Frame, 0)
 
     local function shakeEffect()
         local originalPosition = gui.Frame.Position
@@ -151,15 +170,25 @@ function KeySystem:Init()
         gui.Frame.Position = originalPosition
     end
 
-    submitButton.MouseButton1Click:Connect(function()
-        local enteredKey = keyBox.Text:gsub("•", "")
-        if enteredKey == self.settings.Key then
-            gui:Destroy()
-            self.settings.OnCorrect()
-        else
-            self.settings.OnIncorrect()
-            shakeEffect()
+    keyBox.FocusLost:Connect(function(enterPressed)
+        if enterPressed then
+            local enteredKey = keyBox.Text:gsub("•", "")
+            if enteredKey == self.settings.Key then
+                fadeEffect(gui.Frame, 1)
+                wait(0.5)
+                gui:Destroy()
+                self.settings.OnCorrect()
+            else
+                self.settings.OnIncorrect()
+                shakeEffect()
+            end
         end
+    end)
+
+    gui.Frame.CloseButton.MouseButton1Click:Connect(function()
+        fadeEffect(gui.Frame, 1)
+        wait(0.5)
+        gui:Destroy()
     end)
 end
 
