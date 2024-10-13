@@ -1,4 +1,4 @@
-local KeySystem = {} --h
+local KeySystem = {} --hi
 
 local function createUI(title, note)
     local screenGui = Instance.new("ScreenGui")
