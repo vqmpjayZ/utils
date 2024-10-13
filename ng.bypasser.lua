@@ -1,4 +1,4 @@
-- This rightfully belongs to AnthonyIsntHere and DecayedSpirits (steal if skid XD)
+-- This rightfully belongs to AnthonyIsntHere and DecayedSpirits (steal if skid XD)
 
 return {
     -- COMBINATIONS
