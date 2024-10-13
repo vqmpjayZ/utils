@@ -1,4 +1,12 @@
---dsc.gg/vadriftz
+--[[
+ __   __   ______     _____     ______     __     ______   ______   ______    
+/\ \ / /  /\  __ \   /\  __-.  /\  == \   /\ \   /\  ___\ /\__  _\ /\  ___\   
+\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \  
+ \ \__|    \ \_\ \_\  \ \____-  \ \_\ \_\  \ \_\  \ \_\      \ \_\  \/\_____\ 
+  \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/ 
+                              dsc.gg/vadriftz
+--]]
+
 local KeySystem = {}
 
 local function createUI(title, note, onCorrect, onIncorrect, key)
@@ -139,6 +147,17 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     closeButton.TextSize = 28
     closeButton.Text = "X"
     closeButton.Parent = frame
+
+    local TrademarkLabel = Instance.new("TextLabel")
+TrademarkLabel.Size = UDim2.new(0, 100, 0, 20)
+TrademarkLabel.Position = UDim2.new(0, 10, 1, -25)
+TrademarkLabel.BackgroundTransparency = 1
+TrademarkLabel.Font = Enum.Font.Gotham
+TrademarkLabel.TextColor3 = Color3.fromRGB(80, 80, 80)
+TrademarkLabel.TextSize = 12
+TrademarkLabel.Text = "by Vadrifts"
+TrademarkLabel.TextXAlignment = Enum.TextXAlignment.Left
+TrademarkLabell.Parent = frame
 
     local actualText = ""
     local isHidden = false
