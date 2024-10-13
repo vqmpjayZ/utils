@@ -1,3 +1,4 @@
+--dsc.gg/vadriftz
 local KeySystem = {}
 
 local function createUI(title, note, onCorrect, onIncorrect, key)
@@ -11,10 +12,10 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 0
     frame.Parent = screenGui
---[[
+
     local shadow = Instance.new("ImageLabel")
-    shadow.Size = UDim2.new(1, 39, 1, 39)
-    shadow.Position = UDim2.new(0, -10, 0, -15)
+    shadow.Size = UDim2.new(1, 50, 1, 39)
+    shadow.Position = UDim2.new(-0.02, -10, 0, -15)
     shadow.BackgroundTransparency = 1
     shadow.Image = "rbxassetid://6015897843"
     shadow.ImageColor3 = Color3.new(0, 0, 0)
@@ -24,14 +25,14 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     local uiCorner = Instance.new("UICorner")
     uiCorner.CornerRadius = UDim.new(0, 6)
     uiCorner.Parent = frame
-]]
+
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(1, -20, 0, 22)
+    titleLabel.Size = UDim2.new(1, -20, 0.02, 22)
     titleLabel.Position = UDim2.new(0, 10, 0, 10)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Font = Enum.Font.GothamBold
     titleLabel.TextColor3 = Color3.new(1, 1, 1)
-    titleLabel.TextSize = 18
+    titleLabel.TextSize = 16
     titleLabel.Text = title
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = frame
@@ -68,7 +69,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     hideButton.Parent = frame
 
     local keyBoxContainer = Instance.new("Frame")
-    keyBoxContainer.Size = UDim2.new(0.65, -55, 0, 35)
+    keyBoxContainer.Size = UDim2.new(0.65, -55, 0.03, 35)
     keyBoxContainer.Position = UDim2.new(0, 10, 0, 90)
     keyBoxContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     keyBoxContainer.BorderSizePixel = 0
@@ -98,7 +99,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     clearButton.Font = Enum.Font.Gotham
     clearButton.TextColor3 = Color3.new(1, 1, 1)
     clearButton.TextSize = 14
-    clearButton.Text = "X"
+    clearButton.Text = "🗑️"
     clearButton.Parent = frame
 
     local clearButtonCorner = Instance.new("UICorner")
@@ -209,7 +210,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
         screenGui:Destroy()
     end)
 
-    fadeEffect(frame, 1, 0)  -- Add in-animation here
+    fadeEffect(frame, 1, 0)
 
     return screenGui, keyBox, closeButton, function() return actualText end
 end
