@@ -212,6 +212,8 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
         screenGui:Destroy()
     end)
 
+    fadeEffect(frame, 1, 0)
+
     return screenGui, keyBox, closeButton, function() return actualText end
 end
 
@@ -235,8 +237,6 @@ function KeySystem:Init()
         self.settings.OnIncorrect,
         self.settings.Key
     )
-
-    fadeEffect(gui.Frame, 1, 0)
 
     self.getActualText = getActualText
 end
