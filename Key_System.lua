@@ -6,19 +6,19 @@ local function createUI(title, note)
     screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 400, 0, 200)
-    frame.Position = UDim2.new(0.5, -200, 0.5, -100)
+    frame.Size = UDim2.new(0, 500, 0, 180)
+    frame.Position = UDim2.new(0.5, -250, 0.5, -90)
     frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     frame.BorderSizePixel = 0
     frame.Parent = screenGui
 
     local shadow = Instance.new("ImageLabel")
-    shadow.Size = UDim2.new(1, 47, 1, 47)
-    shadow.Position = UDim2.new(0, -23, 0, -23)
+    shadow.Size = UDim2.new(1, 35, 1, 35)
+    shadow.Position = UDim2.new(0, -17, 0, -17)
     shadow.BackgroundTransparency = 1
     shadow.Image = "rbxassetid://6015897843"
     shadow.ImageColor3 = Color3.new(0, 0, 0)
-    shadow.ImageTransparency = 0.5
+    shadow.ImageTransparency = 0.6
     shadow.Parent = frame
 
     local uiCorner = Instance.new("UICorner")
@@ -48,9 +48,9 @@ local function createUI(title, note)
     subtitleLabel.Parent = frame
 
     local keyBox = Instance.new("TextBox")
-    keyBox.Size = UDim2.new(0.6, -15, 0, 35)
-    keyBox.Position = UDim2.new(0, 10, 0, 80)
-    keyBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    keyBox.Size = UDim2.new(0.7, -15, 0, 35)
+    keyBox.Position = UDim2.new(0, 10, 0, 70)
+    keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     keyBox.BorderSizePixel = 0
     keyBox.Font = Enum.Font.Gotham
     keyBox.TextColor3 = Color3.new(1, 1, 1)
@@ -62,24 +62,23 @@ local function createUI(title, note)
     keyBoxCorner.CornerRadius = UDim.new(0, 6)
     keyBoxCorner.Parent = keyBox
 
-    local hideButton = Instance.new("TextButton")
-    hideButton.Size = UDim2.new(0.35, 0, 0, 35)
-    hideButton.Position = UDim2.new(0.65, 0, 0, 80)
-    hideButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    hideButton.BorderSizePixel = 0
-    hideButton.Font = Enum.Font.Gotham
-    hideButton.TextColor3 = Color3.new(1, 1, 1)
-    hideButton.TextSize = 14
-    hideButton.Text = "Hide/Unhide Key"
+    local keyBoxStroke = Instance.new("UIStroke")
+    keyBoxStroke.Color = Color3.fromRGB(60, 60, 60)
+    keyBoxStroke.Thickness = 1
+    keyBoxStroke.Parent = keyBox
+
+    local hideButton = Instance.new("ImageButton")
+    hideButton.Size = UDim2.new(0, 20, 0, 20)
+    hideButton.Position = UDim2.new(0.7, -40, 0, 77)
+    hideButton.BackgroundTransparency = 1
+    hideButton.Image = "rbxassetid://3926305904"
+    hideButton.ImageRectOffset = Vector2.new(564, 564)
+    hideButton.ImageRectSize = Vector2.new(36, 36)
     hideButton.Parent = frame
 
-    local hideButtonCorner = Instance.new("UICorner")
-    hideButtonCorner.CornerRadius = UDim.new(0, 6)
-    hideButtonCorner.Parent = hideButton
-
     local noteLabel = Instance.new("TextLabel")
-    noteLabel.Size = UDim2.new(0.35, 0, 0, 60)
-    noteLabel.Position = UDim2.new(0.65, 0, 0, 125)
+    noteLabel.Size = UDim2.new(0.25, 0, 0, 60)
+    noteLabel.Position = UDim2.new(0.75, 0, 0, 70)
     noteLabel.BackgroundTransparency = 1
     noteLabel.Font = Enum.Font.Gotham
     noteLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
@@ -91,8 +90,8 @@ local function createUI(title, note)
     noteLabel.Parent = frame
 
     local submitButton = Instance.new("TextButton")
-    submitButton.Size = UDim2.new(0.6, -15, 0, 35)
-    submitButton.Position = UDim2.new(0, 10, 0, 125)
+    submitButton.Size = UDim2.new(0.7, -15, 0, 35)
+    submitButton.Position = UDim2.new(0, 10, 0, 115)
     submitButton.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
     submitButton.BorderSizePixel = 0
     submitButton.Font = Enum.Font.GothamBold
@@ -105,8 +104,30 @@ local function createUI(title, note)
     submitButtonCorner.CornerRadius = UDim.new(0, 6)
     submitButtonCorner.Parent = submitButton
 
+    local closeButton = Instance.new("TextButton")
+    closeButton.Size = UDim2.new(0, 20, 0, 20)
+    closeButton.Position = UDim2.new(1, -25, 0, 5)
+    closeButton.BackgroundTransparency = 1
+    closeButton.Font = Enum.Font.GothamBold
+    closeButton.TextColor3 = Color3.new(1, 1, 1)
+    closeButton.TextSize = 14
+    closeButton.Text = "X"
+    closeButton.Parent = frame
+
+    local isHidden = false
     hideButton.MouseButton1Click:Connect(function()
-        keyBox.TextTransparency = keyBox.TextTransparency == 0 and 1 or 0
+        isHidden = not isHidden
+        if isHidden then
+            keyBox.Text = string.rep("•", #keyBox.Text)
+            hideButton.ImageRectOffset = Vector2.new(524, 564)
+        else
+            keyBox.Text = keyBox.Text:gsub("•", "")
+            hideButton.ImageRectOffset = Vector2.new(564, 564)
+        end
+    end)
+
+    closeButton.MouseButton1Click:Connect(function()
+        screenGui:Destroy()
     end)
 
     return screenGui, keyBox, submitButton
@@ -131,7 +152,7 @@ function KeySystem:Init()
     end
 
     submitButton.MouseButton1Click:Connect(function()
-        local enteredKey = keyBox.Text
+        local enteredKey = keyBox.Text:gsub("•", "")
         if enteredKey == self.settings.Key then
             gui:Destroy()
             self.settings.OnCorrect()
