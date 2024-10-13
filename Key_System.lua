@@ -14,8 +14,8 @@ local function createUI(title, note)
     frame.Parent = screenGui
 
     local shadow = Instance.new("ImageLabel")
-    shadow.Size = UDim2.new(1, 35, 1, 35)
-    shadow.Position = UDim2.new(0, -17, 0, -17)
+    shadow.Size = UDim2.new(1, 45, 1, 45)
+    shadow.Position = UDim2.new(0, -22, 0, -22)
     shadow.BackgroundTransparency = 1
     shadow.Image = "rbxassetid://6015897843"
     shadow.ImageColor3 = Color3.new(0, 0, 0)
@@ -27,30 +27,30 @@ local function createUI(title, note)
     uiCorner.Parent = frame
 
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(1, -20, 0, 30)
+    titleLabel.Size = UDim2.new(1, -20, 0, 25)
     titleLabel.Position = UDim2.new(0, 10, 0, 10)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Font = Enum.Font.GothamBold
     titleLabel.TextColor3 = Color3.new(1, 1, 1)
-    titleLabel.TextSize = 22
+    titleLabel.TextSize = 20
     titleLabel.Text = title
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = frame
 
     local subtitleLabel = Instance.new("TextLabel")
     subtitleLabel.Size = UDim2.new(1, -20, 0, 20)
-    subtitleLabel.Position = UDim2.new(0, 10, 0, 40)
+    subtitleLabel.Position = UDim2.new(0, 10, 0, 35)
     subtitleLabel.BackgroundTransparency = 1
     subtitleLabel.Font = Enum.Font.Gotham
     subtitleLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
-    subtitleLabel.TextSize = 16
+    subtitleLabel.TextSize = 14
     subtitleLabel.Text = "Key System"
     subtitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     subtitleLabel.Parent = frame
 
     local keyLabel = Instance.new("TextLabel")
     keyLabel.Size = UDim2.new(0, 50, 0, 20)
-    keyLabel.Position = UDim2.new(0, 10, 0, 70)
+    keyLabel.Position = UDim2.new(0, 10, 0, 65)
     keyLabel.BackgroundTransparency = 1
     keyLabel.Font = Enum.Font.Gotham
     keyLabel.TextColor3 = Color3.fromRGB(100, 100, 100)
@@ -59,9 +59,18 @@ local function createUI(title, note)
     keyLabel.TextXAlignment = Enum.TextXAlignment.Left
     keyLabel.Parent = frame
 
+    local hideButton = Instance.new("ImageButton")
+    hideButton.Size = UDim2.new(0, 20, 0, 20)
+    hideButton.Position = UDim2.new(0, 40, 0, 65)
+    hideButton.BackgroundTransparency = 1
+    hideButton.Image = "rbxassetid://3926305904"
+    hideButton.ImageRectOffset = Vector2.new(564, 564)
+    hideButton.ImageRectSize = Vector2.new(36, 36)
+    hideButton.Parent = frame
+
     local keyBox = Instance.new("TextBox")
     keyBox.Size = UDim2.new(0.65, -15, 0, 35)
-    keyBox.Position = UDim2.new(0, 10, 0, 95)
+    keyBox.Position = UDim2.new(0, 10, 0, 90)
     keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     keyBox.BorderSizePixel = 0
     keyBox.Font = Enum.Font.Gotham
@@ -75,22 +84,14 @@ local function createUI(title, note)
     keyBoxCorner.Parent = keyBox
 
     local keyBoxStroke = Instance.new("UIStroke")
-    keyBoxStroke.Color = Color3.fromRGB(60, 60, 60)
+    keyBoxStroke.Color = Color3.fromRGB(255, 255, 255)
     keyBoxStroke.Thickness = 1
+    keyBoxStroke.Transparency = 0.9
     keyBoxStroke.Parent = keyBox
-
-    local hideButton = Instance.new("ImageButton")
-    hideButton.Size = UDim2.new(0, 20, 0, 20)
-    hideButton.Position = UDim2.new(0, 60, 0, 70)
-    hideButton.BackgroundTransparency = 1
-    hideButton.Image = "rbxassetid://3926305904"
-    hideButton.ImageRectOffset = Vector2.new(564, 564)
-    hideButton.ImageRectSize = Vector2.new(36, 36)
-    hideButton.Parent = frame
 
     local noteTitle = Instance.new("TextLabel")
     noteTitle.Size = UDim2.new(0, 50, 0, 20)
-    noteTitle.Position = UDim2.new(0.65, 10, 0, 70)
+    noteTitle.Position = UDim2.new(0.65, 10, 0, 65)
     noteTitle.BackgroundTransparency = 1
     noteTitle.Font = Enum.Font.GothamBold
     noteTitle.TextColor3 = Color3.fromRGB(100, 100, 100)
@@ -101,11 +102,11 @@ local function createUI(title, note)
 
     local noteLabel = Instance.new("TextLabel")
     noteLabel.Size = UDim2.new(0.35, -20, 0, 60)
-    noteLabel.Position = UDim2.new(0.65, 10, 0, 95)
+    noteLabel.Position = UDim2.new(0.65, 10, 0, 90)
     noteLabel.BackgroundTransparency = 1
     noteLabel.Font = Enum.Font.Gotham
     noteLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
-    noteLabel.TextSize = 14
+    noteLabel.TextSize = 15
     noteLabel.Text = note
     noteLabel.TextWrapped = true
     noteLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -113,12 +114,12 @@ local function createUI(title, note)
     noteLabel.Parent = frame
 
     local closeButton = Instance.new("TextButton")
-    closeButton.Size = UDim2.new(0, 30, 0, 30)
-    closeButton.Position = UDim2.new(1, -35, 0, 5)
+    closeButton.Size = UDim2.new(0, 40, 0, 40)
+    closeButton.Position = UDim2.new(1, -45, 0, 5)
     closeButton.BackgroundTransparency = 1
     closeButton.Font = Enum.Font.GothamBold
     closeButton.TextColor3 = Color3.new(1, 1, 1)
-    closeButton.TextSize = 20
+    closeButton.TextSize = 24
     closeButton.Text = "X"
     closeButton.Parent = frame
 
@@ -151,7 +152,7 @@ function KeySystem:Init()
     local gui, keyBox = createUI(self.settings.Title, self.settings.Note)
 
     local function fadeEffect(obj, goal)
-        local info = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+        local info = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
         local tween = game:GetService("TweenService"):Create(obj, info, {BackgroundTransparency = goal})
         tween:Play()
     end
@@ -172,7 +173,7 @@ function KeySystem:Init()
             local enteredKey = keyBox.Text:gsub("•", "")
             if enteredKey == self.settings.Key then
                 fadeEffect(gui.Frame, 1)
-                wait(0.5)
+                wait(0.3)
                 gui:Destroy()
                 self.settings.OnCorrect()
             else
@@ -184,7 +185,7 @@ function KeySystem:Init()
 
     gui.Frame.CloseButton.MouseButton1Click:Connect(function()
         fadeEffect(gui.Frame, 1)
-        wait(0.5)
+        wait(0.3)
         gui:Destroy()
     end)
 end
