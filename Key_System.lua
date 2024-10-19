@@ -1,46 +1,11 @@
 --[[
  __   __   ______     _____     ______     __     ______   ______   ______    
 /\ \ / /  /\  __ \   /\  __-.  /\  == \   /\ \   /\  ___\ /\__  _\ /\  ___\   
-\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \ 
+\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \  v1
  \ \__|    \ \_\ \_\  \ \____-  \ \_\ \_\  \ \_\  \ \_\      \ \_\  \/\_____\ 
   \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/ 
                               dsc.gg/vadriftz
 --]]
-
-function KeySystem:Init()
-    local savedKey = getSavedKey()
-    if savedKey and savedKey == self.settings.Key then
-        self.settings.OnCorrect()
-        return
-    end
-
-    local gui, keyBox, closeButton, getActualText = createUI(
-        self.settings.Title,
-        self.settings.Note,
-        function()
-            saveKey(self.settings.Key)
-            self.settings.OnCorrect()
-        end,
-        self.settings.OnIncorrect,
-        self.settings.Key
-    )
-
-    self.getActualText = getActualText
-end
-
-local function saveKey(key)
-    pcall(function()
-        makefolder("VadriftsKeySystem")
-        writefile("VadriftsKeySystem/savedkey.txt", key)
-    end)
-end
-
-local function getSavedKey()
-    local success, content = pcall(function()
-        return readfile("VadriftsKeySystem/savedkey.txt")
-    end)
-    return success and content or nil
-end
 
 local KeySystem = {}
 
