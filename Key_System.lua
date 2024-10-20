@@ -1,7 +1,7 @@
 --[[
  __   __   ______     _____     ______     __     ______   ______   ______    
 /\ \ / /  /\  __ \   /\  __-.  /\  == \   /\ \   /\  ___\ /\__  _\ /\  ___\   
-\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \  v1
+\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \  v1.1
  \ \__|    \ \_\ \_\  \ \____-  \ \_\ \_\  \ \_\  \ \_\      \ \_\  \/\_____\ 
   \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/ 
                               dsc.gg/vadriftz
@@ -237,11 +237,23 @@ end
 function KeySystem.new(settings)
     local self = setmetatable({}, {__index = KeySystem})
     self.settings = settings
+    self.keyFilePath = "VadriftsKeySystem.txt"
     return self
 end
 
+function KeySystem:SaveKeyToFile(key)
+    writefile(self.keyFilePath, key)
+end
+
+function KeySystem:ReadKeyFromFile()
+    if isfile(self.keyFilePath) then
+        return readfile(self.keyFilePath)
+    end
+    return nil
+end
+
 function KeySystem:Init()
-    local savedKey = game.Players.LocalPlayer:GetAttribute("SavedKey")
+    local savedKey = self:ReadKeyFromFile()
     if savedKey and savedKey == self.settings.Key then
         self.settings.OnCorrect()
         return
@@ -250,7 +262,10 @@ function KeySystem:Init()
     local gui, keyBox, closeButton, getActualText = createUI(
         self.settings.Title,
         self.settings.Note,
-        self.settings.OnCorrect,
+        function()
+            self:SaveKeyToFile(self.settings.Key)
+            self.settings.OnCorrect()
+        end,
         self.settings.OnIncorrect,
         self.settings.Key
     )
