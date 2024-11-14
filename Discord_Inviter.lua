@@ -1,3 +1,4 @@
+local AllClipboards = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
 local discordInvite = "https://discord.gg/WDbJ5wE2cR"
 
 local function openDiscordInvite()
@@ -20,7 +21,7 @@ local function openDiscordInvite()
             })
         })
     else
-        setclipboard(discordInvite)
+        AllCliboads(discordInvite)
         print("Discord invite copied to clipboard!")
     end
 end
