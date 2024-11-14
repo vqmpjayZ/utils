@@ -21,7 +21,7 @@ local function openDiscordInvite()
             })
         })
     else
-        AllCliboads(discordInvite)
+        AllCliboards(discordInvite)
         print("Discord invite copied to clipboard!")
     end
 end
