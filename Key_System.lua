@@ -210,6 +210,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
         tween:Play()
         return tween
     end
+
     local function shakeEffect()
         local originalPosition = frame.Position
         for i = 1, 3 do
@@ -247,26 +248,57 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     return screenGui, keyBox, closeButton, function() return actualText end
 end
 
+local KeySystem = {}
+
 function KeySystem.new(settings)
     local self = setmetatable({}, {__index = KeySystem})
     self.settings = settings
-    self.keyFilePath = "VadriftsKeySystem.txt"
     return self
 end
 
-function KeySystem:SaveKeyToFile(key)
-    writefile(self.keyFilePath, key)
-end
-
-function KeySystem:ReadKeyFromFile()
-    if isfile(self.keyFilePath) then
-        return readfile(self.keyFilePath)
-    end
-    return nil
-end
-
 function KeySystem:Init()
-    local savedKey = self:ReadKeyFromFile()
+    local FileHandler = {
+        SaveKeyToFile = function(key)
+            local baseFilePath = "VadriftsKeySystem/Key"
+            local filePath = baseFilePath
+            local counter = 1
+            
+            if not isfolder("VadriftsKeySystem") then
+                makefolder("VadriftsKeySystem")
+            end
+            
+            while isfile(filePath) do
+                filePath = baseFilePath .. counter
+                counter = counter + 1
+            end
+            
+            writefile(filePath, key)
+            return filePath
+        end,
+        
+        ReadKeyFromFile = function()
+            local baseFilePath = "VadriftsKeySystem/Key"
+            local filePath = baseFilePath
+            local counter = 1
+            
+            while true do
+                if isfile(filePath) then
+                    local content = readfile(filePath)
+                    if content and content ~= "" then
+                        return content
+                    end
+                elseif counter > 1 then
+                    filePath = baseFilePath .. (counter - 1)
+                else
+                    break
+                end
+                counter = counter + 1
+            end
+            return nil
+        end
+    }
+    
+    local savedKey = FileHandler.ReadKeyFromFile()
     if savedKey and savedKey == self.settings.Key then
         self.settings.OnCorrect()
         return
@@ -276,7 +308,7 @@ function KeySystem:Init()
         self.settings.Title,
         self.settings.Note,
         function()
-            self:SaveKeyToFile(self.settings.Key)
+            FileHandler.SaveKeyToFile(self.settings.Key)
             self.settings.OnCorrect()
         end,
         self.settings.OnIncorrect,
