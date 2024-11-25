@@ -6,6 +6,7 @@
   \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/ 
                               dsc.gg/vadriftz
 --]]
+--v3.23
 
 local KeySystem = {}
 
@@ -13,6 +14,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     local screenGui = Instance.new("ScreenGui")
     screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    screenGui.DisplayOrder = 999999999
 
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 500, 0, 180)
@@ -20,6 +22,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 0
     frame.Parent = screenGui
+    frame.ZIndex = 999999999
 
     local shadow = Instance.new("ImageLabel")
     shadow.Size = UDim2.new(1, 50, 1, 39)
@@ -28,8 +31,9 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     shadow.Image = "rbxassetid://6015897843"
     shadow.ImageColor3 = Color3.new(0, 0, 0)
     shadow.ImageTransparency = 0.7
-    shadow.ZIndex = frame.ZIndex - 1
+    shadow.ZIndex = 999999998
     shadow.Parent = frame
+
     local uiCorner = Instance.new("UICorner")
     uiCorner.CornerRadius = UDim.new(0, 6)
     uiCorner.Parent = frame
@@ -44,7 +48,8 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     titleLabel.Text = title
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = frame
-
+    titleLabel.ZIndex = 999999999
+    
     local subtitleLabel = Instance.new("TextLabel")
     subtitleLabel.Size = UDim2.new(1, -20, 0, 20)
     subtitleLabel.Position = UDim2.new(0, 10, 0, 32)
@@ -55,6 +60,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     subtitleLabel.Text = "Key System"
     subtitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     subtitleLabel.Parent = frame
+    subtitleLabel.ZIndex = 999999999
 
     local keyLabel = Instance.new("TextLabel")
     keyLabel.Size = UDim2.new(0, 50, 0, 20)
@@ -66,6 +72,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     keyLabel.Text = "Key"
     keyLabel.TextXAlignment = Enum.TextXAlignment.Left
     keyLabel.Parent = frame
+    keyLabel.ZIndex = 999999999
 
     local hideButton = Instance.new("ImageButton")
     hideButton.Size = UDim2.new(0, 20, 0, 20)
@@ -75,6 +82,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     hideButton.ImageRectOffset = Vector2.new(564, 564)
     hideButton.ImageRectSize = Vector2.new(36, 36)
     hideButton.Parent = frame
+    hideButton.ZIndex = 999999999
 
     local keyBoxContainer = Instance.new("Frame")
     keyBoxContainer.Size = UDim2.new(0.65, -55, 0.03, 35)
@@ -82,7 +90,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     keyBoxContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     keyBoxContainer.BorderSizePixel = 0
     keyBoxContainer.Parent = frame
-
+    keyBoxContainer.ZIndex = 999999999
     local keyBoxCorner = Instance.new("UICorner")
     keyBoxCorner.CornerRadius = UDim.new(0, 5)
     keyBoxCorner.Parent = keyBoxContainer
@@ -98,6 +106,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     keyBox.Text = ""
     keyBox.ClearTextOnFocus = false
     keyBox.Parent = keyBoxContainer
+    keyBox.ZIndex = 999999999
 
     local clearButton = Instance.new("TextButton")
     clearButton.Size = UDim2.new(0, 35, 0, 35)
@@ -109,6 +118,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     clearButton.TextSize = 14
     clearButton.Text = "🗑️"
     clearButton.Parent = frame
+    clearButton.ZIndex = 999999999
 
     local clearButtonCorner = Instance.new("UICorner")
     clearButtonCorner.CornerRadius = UDim.new(0, 6)
@@ -124,6 +134,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     noteTitle.Text = "Note"
     noteTitle.TextXAlignment = Enum.TextXAlignment.Left
     noteTitle.Parent = frame
+    noteTitle.ZIndex = 999999999
 
     local noteLabel = Instance.new("TextLabel")
     noteLabel.Size = UDim2.new(0.35, -20, 0, 60)
@@ -137,6 +148,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     noteLabel.TextXAlignment = Enum.TextXAlignment.Left
     noteLabel.TextYAlignment = Enum.TextYAlignment.Top
     noteLabel.Parent = frame
+    noteLabel.ZIndex = 999999999
 
     local closeButton = Instance.new("TextButton")
     closeButton.Size = UDim2.new(0, 40, 0, 40)
@@ -147,6 +159,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     closeButton.TextSize = 28
     closeButton.Text = "X"
     closeButton.Parent = frame
+    closeButton.ZIndex = 999999999
 
     local trademark = Instance.new("TextLabel")
     trademark.Size = UDim2.new(0, 100, 0, 20)
@@ -158,6 +171,7 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
     trademark.Text = "by Vadrifts"
     trademark.TextXAlignment = Enum.TextXAlignment.Left
     trademark.Parent = frame
+    trademark.ZIndex = 999999999
 
     local actualText = ""
     local isHidden = false
@@ -196,7 +210,6 @@ local function createUI(title, note, onCorrect, onIncorrect, key)
         tween:Play()
         return tween
     end
-
     local function shakeEffect()
         local originalPosition = frame.Position
         for i = 1, 3 do
