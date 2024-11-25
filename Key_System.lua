@@ -6,6 +6,16 @@
   \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/ 
                               dsc.gg/vadriftz
 --]]
+--v3.2.4
+
+--[[
+ __   __   ______     _____     ______     __     ______   ______   ______    
+/\ \ / /  /\  __ \   /\  __-.  /\  == \   /\ \   /\  ___\ /\__  _\ /\  ___\   
+\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \ 
+ \ \__|    \ \_\ \_\  \ \____-  \ \_\ \_\  \ \_\  \ \_\      \ \_\  \/\_____\ 
+  \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/ 
+                              dsc.gg/vadriftz
+--]]
 --v3.23
 
 local KeySystem = {}
@@ -282,15 +292,16 @@ function KeySystem:Init()
             local counter = 1
             
             while true do
+                filePath = counter == 1 and baseFilePath or baseFilePath .. counter
                 if isfile(filePath) then
                     local content = readfile(filePath)
-                    if content and content ~= "" then
+                    if content == self.settings.Key then
                         return content
                     end
-                elseif counter > 1 then
-                    filePath = baseFilePath .. (counter - 1)
                 else
-                    break
+                    if counter > 1 then
+                        break
+                    end
                 end
                 counter = counter + 1
             end
