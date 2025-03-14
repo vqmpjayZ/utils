@@ -13,7 +13,7 @@ local function sendResponseNotification()
     StarterGui:SetCore("SendNotification", {
         Title = "Vadrifts ACL",
         Text = "Vadrifts Anti-Chat and Screenshot Logger Loaded Succesfully!",
-        Duration = 10,
+        Duration = 12,
         Icon = "rbxassetid://2541869220"
     })
     
