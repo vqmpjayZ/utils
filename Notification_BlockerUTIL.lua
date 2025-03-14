@@ -1,4 +1,4 @@
---Debug = false
+--Debugging removed
 
 local StarterGui = game:GetService("StarterGui")
 local hasBlockedNotification = false
