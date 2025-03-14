@@ -11,7 +11,7 @@ local function sendResponseNotification()
     task.wait(0.3)
 
     StarterGui:SetCore("SendNotification", {
-        Title = "Vadrifts ACL Loaded!",
+        Title = "Vadrifts ACL",
         Text = "Vadrifts Anti-Chat and Screenshot Logger Loaded Succesfully!",
         Duration = 10,
         Icon = "rbxassetid://2541869220"
