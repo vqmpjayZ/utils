@@ -1,3 +1,5 @@
+--Debugging removed
+
 local originalPrint = print
 local originalWarn = warn
 local originalError = error
@@ -87,16 +89,16 @@ if rconsoleerror then
     end
 end
 
-print("Console message blocker initialized - Messages containing 'Obscura' will be blocked")
+--print("Console message blocker initialized - Messages containing 'Obscura' will be blocked")
 local function testBlocker()
-    print("Normal message - should appear")
-    print("Message with Obscura - should be blocked")
-    warn("Warning with Obscura - should be blocked")
-    print("Another normal message - should appear")
+--    print("Normal message - should appear")
+--    print("Message with Obscura - should be blocked")
+--    warn("Warning with Obscura - should be blocked")
+--    print("Another normal message - should appear")
     
-    print("Message with " .. "Obscura" .. " split - should be blocked")
+ --   print("Message with " .. "Obscura" .. " split - should be blocked")
     
-    print("Table test:", {name = "Obscura Test"})
+--    print("Table test:", {name = "Obscura Test"})
 end
 
 return testBlocker
