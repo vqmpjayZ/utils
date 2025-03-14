@@ -5,7 +5,7 @@
 local StarterGui = game:GetService("StarterGui")
 
 local hasBlockedNotification = false
-e
+
 local originalSetCore = StarterGui.SetCore
 if originalSetCore then
     StarterGui.SetCore = function(self, notifType, data)
