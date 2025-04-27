@@ -1,10 +1,10 @@
 --[[
 FOR SURVIVE THE KILLER IN ROBLOX
- __   __   ______     _____     ______     __     ______   ______   ______    
-/\ \ / /  /\  __ \   /\  __-.  /\  == \   /\ \   /\  ___\ /\__  _\ /\  ___\   
-\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \  
- \ \__|    \ \_\ \_\  \ \____-  \ \_\ \_\  \ \_\  \ \_\      \ \_\  \/\_____\ 
-  \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/ 
+ __   __   ______     _____     ______     __     ______   ______   ______  
+/\ \ / /  /\  __ \   /\  __-.  /\  == \   /\ \   /\  ___\ /\__  _\ /\  ___\ 
+\ \ \'/   \ \  __ \  \ \ \/\ \ \ \  __<   \ \ \  \ \  __\ \/_/\ \/ \ \___  \
+ \ \__|    \ \_\ \_\  \ \____-  \ \_\ \_\  \ \_\  \ \_\      \ \_\  \/\_____\
+  \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/
 ]]
 
 return {
@@ -143,9 +143,9 @@ return {
             rarity = "Uncommon",
             check = function(model)
                 local mesh = model:FindFirstChild("Mesh")
-                return mesh and mesh:IsA("Part") and 
-                       mesh.BrickColor.Name == "Institutional white" and 
-                       mesh.Material == Enum.Material.CorrodedMetal
+                return mesh and mesh:IsA("Part") and
+                        mesh.BrickColor.Name == "Institutional white" and
+                        mesh.Material == Enum.Material.CorrodedMetal
             end
         },
         {
@@ -176,9 +176,9 @@ return {
             rarity = "Rare",
             check = function(model)
                 local mesh = model:FindFirstChild("Mesh")
-                return mesh and mesh:IsA("Part") and 
-                       mesh.BrickColor.Name == "Institutional white" and 
-                       mesh.Material == Enum.Material.SmoothPlastic
+                return mesh and mesh:IsA("Part") and
+                        mesh.BrickColor.Name == "Institutional white" and
+                        mesh.Material == Enum.Material.SmoothPlastic
             end
         },
         {
@@ -186,10 +186,10 @@ return {
             rarity = "Rare",
             check = function(model)
                 for _, part in pairs(model:GetDescendants()) do
-                    if (part:IsA("MeshPart") or part:IsA("Part")) and 
-                       ((part:IsA("MeshPart") and part.MeshId == "http://www.roblox.com/asset/?id=27039535") or
-                        (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and 
-                         part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=27039535")) then
+                    if (part:IsA("MeshPart") or part:IsA("Part")) and
+                        ((part:IsA("MeshPart") and part.MeshId == "http://www.roblox.com/asset/?id=27039535") or
+                        (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and
+                          part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=27039535")) then
                         return true
                     end
                 end
@@ -201,8 +201,8 @@ return {
             rarity = "Rare",
             check = function(model)
                 for _, part in pairs(model:GetDescendants()) do
-                    if part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and 
-                       part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=268471347" then
+                    if part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and
+                        part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=268471347" then
                         return true
                     end
                 end
@@ -238,6 +238,20 @@ return {
             end
         },
         {
+            name = "Golden Compass",
+            rarity = "Legendary",
+            check = function(model)
+                for _, part in pairs(model:GetDescendants()) do
+                    if (part:IsA("MeshPart") and part.MeshId == "http://www.roblox.com/asset/?id=14655367") or
+                       (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and
+                         part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=14655367") then
+                        return true
+                    end
+                end
+                return false
+            end
+        },
+        {
             name = "Gold Pocket Watch",
             rarity = "Legendary",
             check = function(model)
@@ -250,12 +264,19 @@ return {
             check = function(model)
                 for _, part in pairs(model:GetDescendants()) do
                     if (part:IsA("MeshPart") and part.MeshId == "rbxassetid://4770107066") or
-                       (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and 
-                        part:FindFirstChildOfClass("SpecialMesh").MeshId == "rbxassetid://4770107066") then
+                       (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and
+                         part:FindFirstChildOfClass("SpecialMesh").MeshId == "rbxassetid://4770107066") then
                         return true
                     end
                 end
                 return false
+            end
+        },
+        {
+            name = "Redcliff Necklace",
+            rarity = "Immortal",
+            check = function(model)
+                return model:FindFirstChild("RedcliffNecklace") ~= nil
             end
         },
         {
@@ -266,8 +287,8 @@ return {
                 if #children >= 2 then
                     local possibleGoldBar = children[2]
                     if possibleGoldBar:IsA("Part") or possibleGoldBar:IsA("MeshPart") then
-                        local isGoldColored = possibleGoldBar.BrickColor.Name:lower():find("yellow") or 
-                                             possibleGoldBar.BrickColor.Name:lower():find("gold")
+                        local isGoldColored = possibleGoldBar.BrickColor.Name:lower():find("yellow") or
+                                              possibleGoldBar.BrickColor.Name:lower():find("gold")
                         return isGoldColored
                     end
                 end
