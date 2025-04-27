@@ -233,6 +233,14 @@ return {
             name = "Trophy",
             rarity = "Rare",
             check = function(model)
+                for _, part in pairs(model:GetDescendants()) do
+                    if (part:IsA("MeshPart") and part.MeshId == "rbxassetid://6719139437") or
+                       (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and
+                         part:FindFirstChildOfClass("SpecialMesh").MeshId == "rbxassetid://6719139437") then
+                        return true
+                    end
+                end
+
                 local mesh = model:FindFirstChild("Mesh")
                 return mesh and mesh:IsA("Part") and mesh.BrickColor.Name == "Bright yellow"
             end
@@ -283,6 +291,10 @@ return {
             name = "Gold Bar",
             rarity = "Immortal",
             check = function(model)
+                if model:FindFirstChild("Gold Bar") then
+                    return true
+                end
+
                 local children = model:GetChildren()
                 if #children >= 2 then
                     local possibleGoldBar = children[2]
