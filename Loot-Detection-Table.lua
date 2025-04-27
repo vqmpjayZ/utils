@@ -306,6 +306,28 @@ return {
                 end
                 return false
             end
+        },
+        {
+            name = "Treasure Chest", --No idea if this works, correct me if it doesn't work please
+            rarity = "Spectrum",
+            check = function(model)
+              local meshIds = {
+              "rbxassetid://123781273",
+              "rbxassetid://4799316239",
+              "rbxassetid://144474705"
+        }
+        
+        for _, meshId in ipairs(meshIds) do
+            for _, part in pairs(model:GetDescendants()) do
+                if (part:IsA("MeshPart") and part.MeshId == meshId) or
+                   (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and
+                     part:FindFirstChildOfClass("SpecialMesh").MeshId == meshId) then
+                            return true
+                        end
+                    end
+                end
+                return false
+            end
         }
     }
 }
