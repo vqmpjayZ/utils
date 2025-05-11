@@ -1,4 +1,4 @@
---credits: heartasians
+--created by heartasians. just a save file
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TextChatService = game:GetService("TextChatService")
 local IsLegacy = (TextChatService.ChatVersion == Enum.ChatVersion.LegacyChatService)
