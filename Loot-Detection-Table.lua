@@ -185,14 +185,19 @@ return {
             name = "Binoculars",
             rarity = "Rare",
             check = function(model)
-                for _, part in pairs(model:GetDescendants()) do
-                    if (part:IsA("MeshPart") or part:IsA("Part")) and
-                        ((part:IsA("MeshPart") and part.MeshId == "http://www.roblox.com/asset/?id=27039535") or
-                        (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and
-                          part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=27039535")) then
-                        return true
-                    end
-                end
+for _, part in pairs(model:GetDescendants()) do
+    if (part:IsA("MeshPart") and part.MeshId == "http://www.roblox.com/asset/?id=27039535") then
+        return true
+    end
+    if part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and 
+       part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=27039535" then
+        return true
+    end
+    if part:IsA("Part") and part.Name == "Handle" and part:FindFirstChild("Mesh") and
+       part:FindFirstChild("Mesh").MeshId == "http://www.roblox.com/asset/?id=27039535" then
+        return true
+   	end
+end
                 return false
             end
         },
@@ -249,13 +254,19 @@ return {
             name = "Golden Compass",
             rarity = "Legendary",
             check = function(model)
-                for _, part in pairs(model:GetDescendants()) do
-                    if (part:IsA("MeshPart") and part.MeshId == "http://www.roblox.com/asset/?id=14655367") or
-                       (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and
-                         part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=14655367") then
-                        return true
-                    end
-                end
+for _, part in pairs(model:GetDescendants()) do
+    if (part:IsA("MeshPart") and part.MeshId == "http://www.roblox.com/asset/?id=14655367") then
+        return true
+    end
+    if part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and 
+       part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=14655367" then
+        return true
+    end
+    if part:IsA("Part") and part.Name == "Handle" and part:FindFirstChild("Mesh") and
+       part:FindFirstChild("Mesh").MeshId == "http://www.roblox.com/asset/?id=14655367" then
+        return true
+   	end
+end
                 return false
             end
         },
