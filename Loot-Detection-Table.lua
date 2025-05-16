@@ -187,9 +187,9 @@ return {
             check = function(model)
                 for _, part in pairs(model:GetDescendants()) do
                     if (part:IsA("MeshPart") or part:IsA("Part")) and
-                        ((part:IsA("MeshPart") and part.MeshId == "http://www.roblox.com/asset/?id=81700098") or
+                        ((part:IsA("MeshPart") and part.MeshId == "http://www.roblox.com/asset/?id=27039535") or
                         (part:IsA("Part") and part:FindFirstChildOfClass("SpecialMesh") and
-                          part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=81700098")) then
+                          part:FindFirstChildOfClass("SpecialMesh").MeshId == "http://www.roblox.com/asset/?id=27039535")) then
                         return true
                     end
                 end
