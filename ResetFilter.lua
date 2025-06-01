@@ -16,7 +16,9 @@ Modified by vqmpjay
 local CONFIG = {
     FILTER_RESET_COUNT = 15,
     FILTER_RESET_DELAY = 0.05,
-    RANDOM_STRING_LENGTH = 5
+    RANDOM_STRING_LENGTH = 5,
+    SYSTEM_MESSAGE_CHECK_INTERVAL = 0.1,
+    SYSTEM_MESSAGE_TIMEOUT = 3
 }
 
 local TCS = game:GetService("TextChatService")
@@ -30,6 +32,8 @@ local PlayerGui = LocalPlayer.PlayerGui
 
 local isLegacy = TCS.ChatVersion == Enum.ChatVersion.LegacyChatService
 local ChatBar
+local systemMessageConnection
+local lastResetTime = 0
 
 if isLegacy then
     ChatBar = PlayerGui:FindFirstChild("Chat"):FindFirstChild("ChatBar", true)
@@ -43,11 +47,11 @@ end
 
 ChatBar = ChatBar:FindFirstChild("TextBox") or ChatBar
 
+local chars = {}
+for i = 97, 122 do chars[#chars + 1] = string.char(i) end
+for i = 65, 90 do chars[#chars + 1] = string.char(i) end
+
 local function GenerateRandomString(length)
-    local chars = {}
-    for i = 97, 122 do chars[#chars + 1] = string.char(i) end
-    for i = 65, 90 do chars[#chars + 1] = string.char(i) end
-    
     local str = ""
     for i = 1, length do
         str = str .. chars[math.random(#chars)]
@@ -76,57 +80,81 @@ end
 local function FakeChat(Message)
     if isLegacy then
         Players:Chat(Message)
-    else
-        return
+    end
+end
+
+local hiddenElements = {}
+
+local function hideSystemMessage(element)
+    if not hiddenElements[element] then
+        element.Visible = false
+        hiddenElements[element] = true
+        
+        local parentFrame = element.Parent
+        while parentFrame and not parentFrame:IsA("Frame") and not parentFrame:IsA("ScrollingFrame") do
+            parentFrame = parentFrame.Parent
+        end
+        
+        if parentFrame and not hiddenElements[parentFrame] then
+            parentFrame.Visible = false
+            hiddenElements[parentFrame] = true
+        end
+    end
+end
+
+local function searchAndHideText(parent)
+    for _, child in pairs(parent:GetDescendants()) do
+        if (child:IsA("TextLabel") or child:IsA("TextButton")) and
+            (child.Text:find("You do not own that emote") or
+             child.Text:find("Emote not found") or
+             child.Text:find("That emote doesn't exist")) then
+            hideSystemMessage(child)
+        end
     end
 end
 
 local function SetupSystemMessageRemoval()
     if not isLegacy then
-        task.spawn(function()
-            local success, coreGui = pcall(function()
-                return game:GetService("CoreGui")
-            end)
+        if systemMessageConnection then
+            systemMessageConnection:Disconnect()
+        end
+        
+        hiddenElements = {}
+        
+        local success, coreGui = pcall(function()
+            return game:GetService("CoreGui")
+        end)
+        
+        if not success then
+            coreGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+        end
+        
+        local startTime = tick()
+        local lastCheck = 0
+        
+        systemMessageConnection = RunService.Heartbeat:Connect(function()
+            local currentTime = tick()
             
-            if not success then
-                coreGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
-            end
-
-            local function searchAndHideText(parent)
-                for _, child in pairs(parent:GetDescendants()) do
-                    if (child:IsA("TextLabel") or child:IsA("TextButton")) and 
-                       (child.Text:find("You do not own that emote") or 
-                        child.Text:find("Emote not found") or 
-                        child.Text:find("That emote doesn't exist")) then
-
-                        child.Visible = false
-
-                        local parentFrame = child.Parent
-                        while parentFrame and not parentFrame:IsA("Frame") and not parentFrame:IsA("ScrollingFrame") do
-                            parentFrame = parentFrame.Parent
-                        end
-                        
-                        if parentFrame then
-                            parentFrame.Visible = false
-                        end
-                    end
-                end
-            end
-
-            searchAndHideText(coreGui)
-
-            local connection = RunService.RenderStepped:Connect(function()
+            if currentTime - lastCheck >= CONFIG.SYSTEM_MESSAGE_CHECK_INTERVAL then
                 searchAndHideText(coreGui)
-            end)
-
-            task.delay(CONFIG.FILTER_RESET_COUNT * CONFIG.FILTER_RESET_DELAY + 5, function()
-                connection:Disconnect()
-            end)
+                lastCheck = currentTime
+            end
+            
+            if currentTime - startTime >= CONFIG.SYSTEM_MESSAGE_TIMEOUT then
+                systemMessageConnection:Disconnect()
+                systemMessageConnection = nil
+            end
         end)
     end
 end
 
 local function ResetFilter()
+    local currentTime = tick()
+    if currentTime - lastResetTime < 0.5 then
+        return true
+    end
+    lastResetTime = currentTime
+    
     if isLegacy then
         for i = 1, 10 do
             local guid = GenerateRandomString(30)
