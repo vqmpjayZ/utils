@@ -1,3 +1,6 @@
+-- This no longer works because Discord recently (2025) decided to discontinue RPC which was needed to open the invite over roblox. This script is discontinued till they decide to rerun their API.
+-- Old code:
+
 local AllClipboards = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
 local discordInvite = "https://discord.gg/WDbJ5wE2cR"
 
@@ -21,7 +24,7 @@ local function openDiscordInvite()
             })
         })
     else
-        AllCliboards(discordInvite)
+        AllClipboards(discordInvite)
         print("Discord invite copied to clipboard!")
     end
 end
