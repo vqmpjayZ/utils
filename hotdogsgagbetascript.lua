@@ -123,16 +123,13 @@ local Credits = Home:CreateSection("▶ Credits", false)
 Home:CreateLabel("[+] vqmpjay - Script Owner & Developer", Credits)
 
 local Main = Window:CreateTab("Client", "user")
-local SecTools = Main:CreateSection("Tools", false)
+local Tools = Main:CreateSection("-Tools-", false)
 
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
-local player = Players.LocalPlayer
 
 Main:CreateButton({
     Name = "[CLIENT] Obtain Recall Wrench (No cooldown + ∞ Uses)",
     Interact = "Obtain",
-    SectionParent= SecTools,
+    SectionParent= Tools,
     Callback = function()
         if player.Backpack:FindFirstChild("Recall Wrench [∞x Uses]") or (player.Character and player.Character:FindFirstChild("Recall Wrench [∞x Uses]")) then
             Rayfield:Notify({
@@ -168,9 +165,9 @@ Main:CreateButton({
 })
 
 Main:CreateButton({
-    Name = "Click to TP tool",
+    Name = "Click TP tool",
     Interact = "Obtain",
-    SectionParent= SecTools,
+    SectionParent= Tools,
     Callback = function()
         if player.Backpack:FindFirstChild("Teleport tool") or (player.Character and player.Character:FindFirstChild("Teleport tool")) then
             Rayfield:Notify({
@@ -219,11 +216,131 @@ Main:CreateButton({
     end
 })
 
-local LP = Main:CreateSection("Player modifications", false)
+local ACS = Main:CreateSection("-Auto Collect Seed Collectables-", false)
+local RunService = game:GetService("RunService")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
-local Players = game:GetService("Players")
+local toggleEnabled = false
+local connection
+
+local function teleportCollectablesToPlayer()
+    if not toggleEnabled then return end
+    
+    local currentCharacter = player.Character
+    if not currentCharacter then return end
+    
+    local currentHRP = currentCharacter:FindFirstChild("HumanoidRootPart")
+    if not currentHRP then return end
+    
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj.Name:find("_Seed_Collectable") and obj:IsA("BasePart") then
+            obj.CFrame = currentHRP.CFrame + Vector3.new(math.random(-2, 2), 0, math.random(-2, 2))
+        elseif obj.Name:find("_Seed_Collectable") and obj:IsA("Model") then
+            local primaryPart = obj.PrimaryPart or obj:FindFirstChildOfClass("BasePart")
+            if primaryPart then
+                obj:SetPrimaryPartCFrame(currentHRP.CFrame + Vector3.new(math.random(-2, 2), 0, math.random(-2, 2)))
+            end
+        end
+    end
+end
+
+Main:CreateToggle({
+    Name = "Auto Collect Seed Collectables",
+    CurrentValue = false,
+    SectionParent = ACS,
+    Flag = "SeedTeleportToggle",
+    Callback = function(Value)
+        toggleEnabled = Value
+        
+        if Value then
+            connection = RunService.Heartbeat:Connect(teleportCollectablesToPlayer)
+        else
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
+        end
+    end,
+})
+
+player.CharacterAdded:Connect(function(newCharacter)
+    character = newCharacter
+    humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+end)
+
+local Pets = Main:CreateSection("-Pets visibility-", false)
+
+local toggleEnabled = false
+local connection
+local originalTransparencies = {}
+
+local function makePetsTransparent()
+    if not toggleEnabled then return end
+    
+    local petsPhysical = workspace:FindFirstChild("PetsPhysical")
+    if not petsPhysical then return end
+    
+    for _, petMover in pairs(petsPhysical:GetChildren()) do
+        if petMover.Name == "PetMover" then
+            for _, model in pairs(petMover:GetChildren()) do
+                if model:IsA("Model") then
+                    for _, part in pairs(model:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            if not originalTransparencies[part] then
+                                originalTransparencies[part] = part.Transparency
+                            end
+                            part.Transparency = 1
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function restorePetTransparency()
+    local petsPhysical = workspace:FindFirstChild("PetsPhysical")
+    if not petsPhysical then return end
+    
+    for _, petMover in pairs(petsPhysical:GetChildren()) do
+        if petMover.Name == "PetMover" then
+            for _, model in pairs(petMover:GetChildren()) do
+                if model:IsA("Model") then
+                    for _, part in pairs(model:GetDescendants()) do
+                        if part:IsA("BasePart") and originalTransparencies[part] then
+                            part.Transparency = originalTransparencies[part]
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    originalTransparencies = {}
+end
+
+Main:CreateToggle({
+    Name = "Hide All Pets",
+    CurrentValue = false,
+    SectionParent = Pets,
+    Flag = "PetTransparencyToggle",
+    Callback = function(Value)
+        toggleEnabled = Value
+        
+        if Value then
+            connection = RunService.Heartbeat:Connect(makePetsTransparent)
+        else
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
+            restorePetTransparency()
+        end
+    end,
+})
+
+local LP = Main:CreateSection("-Player modifications-", false)
 local VirtualUser = game:GetService("VirtualUser")
-
 local LocalPlayer = Players.LocalPlayer
 
 Main:CreateToggle({
@@ -244,7 +361,6 @@ Main:CreateToggle({
 })
 
 local function getHumanoid()
-    local character = player.Character or player.CharacterAdded:Wait()
     return character:WaitForChild("Humanoid", 2)
 end
 
@@ -287,7 +403,6 @@ end
 -- Sell stuff
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
 local Leaderstats = LocalPlayer.leaderstats
@@ -434,7 +549,7 @@ local function CreateSellArea()
 end
 
 Selling:CreateToggle({
-    Name = "Auto Sell Zone",
+    Name = "Insta Sell Zone",
     CurrentValue = false,
     SectionParent = SellArea,
     Flag = "AutoSellZone",
@@ -459,7 +574,6 @@ local NotificationSection = StockBotTab:CreateSection("Local Notifications", fal
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local HttpService = game:GetService("HttpService")
 local SoundService = game:GetService("SoundService")
-local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -975,6 +1089,74 @@ spawn(function()
     while true do
         wait(2)
         updateFarmList()
+    end
+end)
+
+local ClickTP = Teleports:CreateSection("(Hold) Click TP", false)
+local mouse = player:GetMouse()
+
+local teleportEnabled = false
+local keybind = Enum.KeyCode.LeftControl
+
+local function getRoot(character)
+    return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+end
+
+Teleports:CreateToggle({
+   Name = "Enable Click to Teleport",
+   CurrentValue = false,
+   SectionParent = ClickTP,
+   Flag = "TeleportToggle",
+   Callback = function(Value)
+      teleportEnabled = Value
+   end,
+})
+
+Teleports:CreateKeybind({
+   Name = "Teleport Keybind",
+   CurrentKeybind = "LeftControl",
+   HoldToInteract = false,
+   SectionParent = ClickTP,
+   Flag = "TeleportKeybind",
+   Callback = function(Keybind)
+   end,
+})
+
+mouse.Button1Down:Connect(function()
+    if teleportEnabled and UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+        if character then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid and humanoid.SeatPart then
+                humanoid.Sit = false
+                wait(0.1)
+            end
+            
+            local rootPart = getRoot(character)
+            if rootPart then
+                if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+                    local camera = workspace.CurrentCamera
+                    local unitRay = camera:ScreenPointToRay(camera.ViewportSize.X/2, camera.ViewportSize.Y/2)
+                    local raycastParams = RaycastParams.new()
+                    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+                    raycastParams.FilterDescendantsInstances = {character}
+
+                    local raycastResult = workspace:Raycast(unitRay.Origin, unitRay.Direction * 1000, raycastParams)
+                    if raycastResult then
+                        local position = raycastResult.Position
+                        local camera = workspace.CurrentCamera
+                        local lookDirection = (position - camera.CFrame.Position).Unit
+                        local newCFrame = CFrame.lookAt(Vector3.new(position.X, position.Y + 2.5, position.Z), Vector3.new(position.X, position.Y + 2.5, position.Z) + Vector3.new(lookDirection.X, 0, lookDirection.Z))
+                        rootPart.CFrame = newCFrame
+                    end
+                else
+                    local position = mouse.Hit.Position
+                    local camera = workspace.CurrentCamera
+                    local lookDirection = (position - camera.CFrame.Position).Unit
+                    local newCFrame = CFrame.lookAt(Vector3.new(position.X, position.Y + 2.5, position.Z), Vector3.new(position.X, position.Y + 2.5, position.Z) + Vector3.new(lookDirection.X, 0, lookDirection.Z))
+                    rootPart.CFrame = newCFrame
+                end
+            end
+        end
     end
 end)
     end
