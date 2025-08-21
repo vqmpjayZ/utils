@@ -23,7 +23,7 @@ Features:
 - Constant monitoring
 - Prevents Function hook restoration and tampering
 
-(It's hard to explain how advanced the script is without saying how it works directly)
+it's hard to explain how good the script is without saying how it works directly :(
 ]]
 
 --obfuscation method @ .gg/25ms
