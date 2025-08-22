@@ -1,4 +1,5 @@
---CREATED BY SEIZED SOLUTIONS
+--CREATED BY SEIZED SOLUTIONS | zins
+--ooo na modified by vqmpjay!?
 local success, error = pcall(function()
     local g = getinfo or debug.getinfo
     local d = false
@@ -55,6 +56,5 @@ local success, error = pcall(function()
 end)
 
 if not success then
-    warn("Adonis bypass failed to load - executor may not support required functions")
-    warn("Continuing script execution...")
+    warn("Adonis bypass failed to load")
 end
