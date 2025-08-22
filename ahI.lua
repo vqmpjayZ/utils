@@ -228,7 +228,6 @@ local function hookClipboardFunctions()
                     end
                 end
             else
-                -- Handle nested functions like Clipboard.set
                 local obj = getgenv and getgenv()[parts[1]] or _G[parts[1]]
                 if obj and obj[parts[2]] then
                     local orig = obj[parts[2]]
@@ -244,7 +243,6 @@ local function hookClipboardFunctions()
         end)
     end
     
-    -- Check clipboard content periodically
     task.spawn(function()
         while task.wait(1) do
             pcall(function()
@@ -260,7 +258,6 @@ local function hookClipboardFunctions()
 end
 
 local function hookConsoleFunctions()
-    -- Hook print and warn
     local origPrint = print
     print = function(...)
         local args = {...}
@@ -291,8 +288,7 @@ local function hookConsoleFunctions()
         getgenv().print = print
         getgenv().warn = warn
     end
-    
-    -- Hook rconsole functions
+
     local consoleFuncs = {
         "rconsoleprint", "rconsoleinfo", "rconsoleerr", "rconsolelog", 
         "rconsolewrite", "rconsolewarn", "consoleprint", "consolewarn"
@@ -325,7 +321,7 @@ local function hookConsoleFunctions()
             end
         end)
     end
-}
+end
 
 local function destroyMaliciousGUI(obj)
     task.spawn(function()
