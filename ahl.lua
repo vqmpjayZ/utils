@@ -3,8 +3,6 @@ if _G.__ANTI_HTTP_SPY_ACTIVE then
 end
 _G.__ANTI_HTTP_SPY_ACTIVE = true
 
-local DEBUG_MODE = true
-
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local RunService = game:GetService("RunService")
@@ -14,26 +12,12 @@ local capturedRequests = {}
 local kickInitiated = false
 local activeCleanupRunning = false
 
-local function debugPrint(...)
-    if DEBUG_MODE then
-        print("[AntiLogger]", ...)
-    end
-end
-
-local function debugWarn(...)
-    if DEBUG_MODE then
-        warn("[AntiLogger]", ...)
-    end
-end
-
 local function kickPlayer(reason)
     if kickInitiated then return end
     kickInitiated = true
     
-    debugWarn("Kicking player:", reason)
-    
     task.spawn(function()
-        lp:Kick("Unexpected Error Occurred")
+        lp:Kick(reason or "Unexpected Error Occurred (Logger detected)")
     end)
 end
 
@@ -42,7 +26,6 @@ local function captureRequest(url)
     
     if url:match("^https?://[%w%-_%.]+/[%w%-_%.%%%?%&%=%#%+%/]*$") then
         capturedRequests[url] = true
-        debugPrint("Captured request:", url)
     end
 end
 
