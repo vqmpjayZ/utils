@@ -1,9 +1,9 @@
 --[[
 ANTI HTTP LOGGER
-Prevents all kinds of HTTP logging methods and is completely invisible and undetected.
-Should work on all executors, apart from Codex, since it tends to break on obfuscated code.
+Prevents all kinds of HTTP logging methods and is completely invisible.
+Should work on all executors.
 
-Made with love, vqmpjay (NOT vinnie) <3
+Made with love, Vadrifts team <3
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  __   __   ______     _____     ______     __     ______   ______   ______    
 /\ \ / /  /\  __ \   /\  __-.  /\  == \   /\ \   /\  ___\ /\__  _\ /\  ___\   
@@ -12,19 +12,526 @@ Made with love, vqmpjay (NOT vinnie) <3
   \/_/      \/_/\/_/   \/____/   \/_/ /_/   \/_/   \/_/       \/_/   \/_____/ 
                                 dsc.gg/vadriftz
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-* Note: the script is obfuscated so that there's less of a chance of it getting bypassed. Hope you understand.
-Features:
-- Reliable and silent anti-HTTP logger
-- Never seen before method
-- Quick termination and kick-on detection
-- Quick detection for clipboards, files, console, rconsole*? and GUIs of all types
-- Compatible with a lot of executors, including Xeno/Solara (*may lag a bit on these executors)
-- Constant monitoring
-- Prevents Function hook restoration and tampering
-
-it's hard to explain how good the script is without saying how it works directly :(
 ]]
 
---obfuscation method @ .gg/25ms
-if _G.vadrifts then return end;_G.vadrifts=true;local a=game:GetService("Players");local b=game:GetService("CoreGui");local c=game:GetService("RunService");local d=a.LocalPlayer;local e={};local f=false;local g=false;local function h(i)local j="";for k=1,#i do j=j..string.char(string.byte(i:sub(k,k))+3)end;return j end;local function l(i)local j="";for k=1,#i do j=j..string.char(string.byte(i:sub(k,k))-3)end;return j end;local m=h("Unexpected Error Occurred");local function n()if f then return end;f=true;task.spawn(function()d:Kick(l(m))end)end;local function o(p)if type(p)~="string"or #p<8 then return end;e[p]=true;e[p:lower()]=true;if p:match("https?://[%w%-_%.%%%?%&%=%#%+%/]+")then local q=p:match("https?://([^/]+)");if q then e[q]=true;e[q:lower()]=true end end end;local function r(s)if type(s)~="string"or #s<8 then return false end;for p,t in pairs(e)do if s:find(p,1,true)then return true end end;return false end;local function u(v)return function(...)local w={...};for t,x in ipairs(w)do if type(x)=="string"then o(x)elseif type(x)=="table"and(x.Url or x.url)then o(x.Url or x.url)end end;local y,z=pcall(v,...);if y and z then if type(z)=="string"then o(z)elseif type(z)=="table"and(z.Body or z.body)then local A=z.Body or z.body;if type(A)=="string"then o(A)end end end;return z end end;local function B()pcall(function()if game.HttpGet then local C=game.HttpGet;game.HttpGet=function(self,p,...)o(p);return C(self,p,...)end end end);pcall(function()if game.HttpGetAsync then local C=game.HttpGetAsync;game.HttpGetAsync=function(self,p,...)o(p);return C(self,p,...)end end end);pcall(function()if game.HttpPost then local C=game.HttpPost;game.HttpPost=function(self,p,...)o(p);return C(self,p,...)end end end);pcall(function()if game.HttpPostAsync then local C=game.HttpPostAsync;game.HttpPostAsync=function(self,p,...)o(p);return C(self,p,...)end end end);if getgenv then pcall(function()if getgenv().request then getgenv().request=u(getgenv().request)end end);pcall(function()if getgenv().syn and getgenv().syn.request then getgenv().syn.request=u(getgenv().syn.request)end end);pcall(function()if getgenv().http and getgenv().http.request then getgenv().http.request=u(getgenv().http.request)end end)end;pcall(function()if _G.request then _G.request=u(_G.request)end end);pcall(function()if _G.http_request then _G.http_request=u(_G.http_request)end end)end;local function D()local E={{"writefile",true},{"appendfile",true},{"makefolder",false},{"delfolder",false},{"delfile",false}};for t,F in ipairs(E)do local G,H=F[1],F[2];pcall(function()if getgenv and getgenv()[G]then local C=getgenv()[G];getgenv()[G]=function(I,J)if r(I)or(H and J and r(J))then n();return end;if H then return C(I,J)else return C(I)end end end end);pcall(function()if _G[G]then local C=_G[G];_G[G]=function(I,J)if r(I)or(H and J and r(J))then n();return end;if H then return C(I,J)else return C(I)end end end end)end end;local function K()local L={"setclipboard","toclipboard","set_clipboard","Clipboard.set","copystring"};for t,G in ipairs(L)do pcall(function()local M=G:split(".");if #M==1 then if getgenv and getgenv()[G]then local C=getgenv()[G];getgenv()[G]=function(J)if r(J)then n();return end;return C(J)end end;if _G[G]then local C=_G[G];_G[G]=function(J)if r(J)then n();return end;return C(J)end end else local N=getgenv and getgenv()[M[1]]or _G[M[1]];if N and N[M[2]]then local C=N[M[2]];N[M[2]]=function(J)if r(J)then n();return end;return C(J)end end end end)end;task.spawn(function()while task.wait(1)do pcall(function()if getclipboard then local O=getclipboard();if O and r(O)then n()end end end)end end)end;local function P()local Q=print;print=function(...)local w={...};for t,x in ipairs(w)do if r(tostring(x))then n();return end end;return Q(...)end;local R=warn;warn=function(...)local w={...};for t,x in ipairs(w)do if r(tostring(x))then n();return end end;return R(...)end;_G.print=print;_G.warn=warn;if getgenv then getgenv().print=print;getgenv().warn=warn end;local S={"rconsoleprint","rconsoleinfo","rconsoleerr","rconsolelog","rconsolewrite","rconsolewarn","consoleprint","consolewarn"};for t,G in ipairs(S)do pcall(function()if getgenv and getgenv()[G]then local C=getgenv()[G];getgenv()[G]=function(J,...)if r(tostring(J))then n();return end;return C(J,...)end end end);pcall(function()if _G[G]then local C=_G[G];_G[G]=function(J,...)if r(tostring(J))then n();return end;return C(J,...)end end end)end end;local function T(U)task.spawn(function()local V=U;local W=0;while V and V.Parent~=b and V.Parent~=game and W<10 do V=V.Parent;W=W+1 end;if V and V:IsA("Instance")then pcall(function()V:Destroy()end)else pcall(function()U:Destroy()end)end;if U and U.Parent and U.Parent:IsA("Instance")then pcall(function()U.Parent:Destroy()end)end;if not f then n()end end)end;local function X(U)if not U or not U:IsA("Instance")then return end;if not(U:IsA("TextLabel")or U:IsA("TextBox")or U:IsA("TextButton")or U:IsA("RichTextLabel"))then return end;local function Y()if not U or not U:IsA("Instance")or not U.Parent then return false end;local s=U.Text;if s and #s>8 and r(s)then T(U);return true end;return false end;if Y()then return end;local Z;pcall(function()Z=U:GetPropertyChangedSignal("Text"):Connect(function()if Y()and Z then Z:Disconnect()end end)end);pcall(function()U.AncestryChanged:Connect(function(t,_)if not _ and Z then Z:Disconnect()end end)end)end;local function a0(a1)if not a1 or not a1:IsA("Instance")then return end;pcall(function()for t,a2 in ipairs(a1:GetDescendants())do task.spawn(function()X(a2)end)end end);pcall(function()a1.DescendantAdded:Connect(function(U)task.spawn(function()X(U)end)end)end)end;local function a3()pcall(function()a0(b)end);pcall(function()for t,a4 in ipairs(b:GetChildren())do task.spawn(function()a0(a4)end)end end);pcall(function()local a5=d:FindFirstChild("PlayerGui");if a5 then a0(a5)end end)end;local function a6()if g then return end;g=true;task.spawn(function()while true do task.wait(0.5);pcall(function()for t,U in ipairs(b:GetDescendants())do if U:IsA("TextLabel")or U:IsA("TextBox")or U:IsA("TextButton")or U:IsA("RichTextLabel")then if U.Text and #U.Text>8 and r(U.Text)then T(U)end end end end)end end)end;task.spawn(function()o("https://example.com");o("https://api.example.org/data");o("https://github.com/user/repo");o("https://pastebin.com/raw/abcdef");o("https://raw.githubusercontent.com/user/repo/main/script.lua")end);B();D();K();P();a3();a6();b.ChildAdded:Connect(function(a4)task.spawn(function()a0(a4)end)end);task.spawn(function()while task.wait(2)do B();D();K()end end)
+if _G.__ANTI_HTTP_SPY_ACTIVE then
+    return
+end
+_G.__ANTI_HTTP_SPY_ACTIVE = true
+
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local RunService = game:GetService("RunService")
+local lp = Players.LocalPlayer
+
+local capturedRequests = {}
+local kickInitiated = false
+local activeCleanupRunning = false
+
+local function kickPlayer(reason)
+    if kickInitiated then return end
+    kickInitiated = true
+    
+    task.spawn(function()
+        lp:Kick(reason or "Unexpected Error Occurred")
+    end)
+end
+
+local function captureRequest(url)
+    if type(url) ~= "string" or #url < 15 then return end
+    
+    if url:match("^https?://[%w%-_%.]+/[%w%-_%.%%%?%&%=%#%+%/]*$") then
+        capturedRequests[url] = true
+    end
+end
+
+local function isRequestContent(text)
+    if type(text) ~= "string" or #text < 15 then return false end
+    
+    local suspiciousCount = 0
+    
+    for request in pairs(capturedRequests) do
+        if text == request then
+            return true
+        end
+        
+        if #request > 20 and text:find(request:sub(1, 20), 1, true) and text:find(request:sub(-15), 1, true) then
+            suspiciousCount = suspiciousCount + 1
+            if suspiciousCount >= 2 then
+                return true
+            end
+        end
+    end
+    
+    return false
+end
+
+local function isLegitimateUI(obj)
+    if not obj or not obj:IsA("Instance") then return false end
+    
+    local legitNames = {"Frame", "ScrollingFrame", "TextLabel", "TextButton", "ImageLabel", "ImageButton"}
+    local current = obj
+    local depth = 0
+    
+    while current and depth < 5 do
+        if current.Name and (
+            current.Name:lower():find("krnl") or 
+            current.Name:lower():find("executor") or 
+            current.Name:lower():find("script") or
+            current.Name:lower():find("inject") or
+            current.Name:lower():find("menu") or
+            current.Name:lower():find("gui")
+        ) then
+            return true
+        end
+        current = current.Parent
+        depth = depth + 1
+    end
+    
+    return false
+end
+
+local function createHttpHook(originalFunc)
+    return function(...)
+        local args = {...}
+        
+        for _, arg in ipairs(args) do
+            if type(arg) == "string" then
+                captureRequest(arg)
+            elseif type(arg) == "table" and (arg.Url or arg.url) then
+                captureRequest(arg.Url or arg.url)
+            end
+        end
+        
+        local success, result = pcall(originalFunc, ...)
+        
+        if success and result then
+            if type(result) == "string" then
+                captureRequest(result)
+            elseif type(result) == "table" and (result.Body or result.body) then
+                local body = result.Body or result.body
+                if type(body) == "string" then
+                    captureRequest(body)
+                end
+            end
+        end
+        
+        return result
+    end
+end
+
+local function hookHttpMethods()
+    pcall(function()
+        if game.HttpGet then
+            local orig = game.HttpGet
+            game.HttpGet = function(self, url, ...)
+                captureRequest(url)
+                return orig(self, url, ...)
+            end
+        end
+    end)
+    
+    pcall(function()
+        if game.HttpGetAsync then
+            local orig = game.HttpGetAsync
+            game.HttpGetAsync = function(self, url, ...)
+                captureRequest(url)
+                return orig(self, url, ...)
+            end
+        end
+    end)
+    
+    pcall(function()
+        if game.HttpPost then
+            local orig = game.HttpPost
+            game.HttpPost = function(self, url, ...)
+                captureRequest(url)
+                return orig(self, url, ...)
+            end
+        end
+    end)
+    
+    pcall(function()
+        if game.HttpPostAsync then
+            local orig = game.HttpPostAsync
+            game.HttpPostAsync = function(self, url, ...)
+                captureRequest(url)
+                return orig(self, url, ...)
+            end
+        end
+    end)
+    
+    if getgenv then
+        pcall(function()
+            if getgenv().request then
+                getgenv().request = createHttpHook(getgenv().request)
+            end
+        end)
+        
+        pcall(function()
+            if getgenv().syn and getgenv().syn.request then
+                getgenv().syn.request = createHttpHook(getgenv().syn.request)
+            end
+        end)
+        
+        pcall(function()
+            if getgenv().http and getgenv().http.request then
+                getgenv().http.request = createHttpHook(getgenv().http.request)
+            end
+        end)
+    end
+    
+    pcall(function()
+        if _G.request then
+            _G.request = createHttpHook(_G.request)
+        end
+    end)
+    
+    pcall(function()
+        if _G.http_request then
+            _G.http_request = createHttpHook(_G.http_request)
+        end
+    end)
+end
+
+local function hookFileSystemFunctions()
+    local fileFunctions = {
+        {"writefile", true},
+        {"appendfile", true},
+        {"makefolder", false},
+        {"delfolder", false},
+        {"delfile", false}
+    }
+    
+    for _, funcData in ipairs(fileFunctions) do
+        local funcName, checkContent = funcData[1], funcData[2]
+        
+        pcall(function()
+            if getgenv and getgenv()[funcName] then
+                local orig = getgenv()[funcName]
+                getgenv()[funcName] = function(path, content)
+                    if isRequestContent(path) or (checkContent and content and isRequestContent(content)) then
+                        kickPlayer("File logger detected")
+                        return
+                    end
+                    if checkContent then
+                        return orig(path, content)
+                    else
+                        return orig(path)
+                    end
+                end
+            end
+        end)
+        
+        pcall(function()
+            if _G[funcName] then
+                local orig = _G[funcName]
+                _G[funcName] = function(path, content)
+                    if isRequestContent(path) or (checkContent and content and isRequestContent(content)) then
+                        kickPlayer("File logger detected")
+                        return
+                    end
+                    if checkContent then
+                        return orig(path, content)
+                    else
+                        return orig(path)
+                    end
+                end
+            end
+        end)
+    end
+end
+
+local function hookClipboardFunctions()
+    local clipboardFuncs = {"setclipboard", "toclipboard", "set_clipboard", "Clipboard.set", "copystring"}
+    
+    for _, funcName in ipairs(clipboardFuncs) do
+        pcall(function()
+            local parts = funcName:split(".")
+            if #parts == 1 then
+                if getgenv and getgenv()[funcName] then
+                    local orig = getgenv()[funcName]
+                    getgenv()[funcName] = function(content)
+                        if isRequestContent(content) then
+                            kickPlayer("Clipboard logger detected")
+                            return
+                        end
+                        return orig(content)
+                    end
+                end
+                
+                if _G[funcName] then
+                    local orig = _G[funcName]
+                    _G[funcName] = function(content)
+                        if isRequestContent(content) then
+                            kickPlayer("Clipboard logger detected")
+                            return
+                        end
+                        return orig(content)
+                    end
+                end
+            else
+                local obj = getgenv and getgenv()[parts[1]] or _G[parts[1]]
+                if obj and obj[parts[2]] then
+                    local orig = obj[parts[2]]
+                    obj[parts[2]] = function(content)
+                        if isRequestContent(content) then
+                            kickPlayer("Clipboard logger detected")
+                            return
+                        end
+                        return orig(content)
+                    end
+                end
+            end
+        end)
+    end
+    
+    task.spawn(function()
+        while task.wait(2) do
+            pcall(function()
+                if getclipboard then
+                    local clipContent = getclipboard()
+                    if clipContent and isRequestContent(clipContent) then
+                        kickPlayer("Clipboard contains logged URL")
+                    end
+                end
+            end)
+        end
+    end)
+end
+
+local function hookConsoleFunctions()
+    local origPrint = print
+    print = function(...)
+        local args = {...}
+        for _, arg in ipairs(args) do
+            if isRequestContent(tostring(arg)) then
+                kickPlayer("Print logger detected")
+                return
+            end
+        end
+        return origPrint(...)
+    end
+    
+    local origWarn = warn
+    warn = function(...)
+        local args = {...}
+        for _, arg in ipairs(args) do
+            if isRequestContent(tostring(arg)) then
+                kickPlayer("Warn logger detected")
+                return
+            end
+        end
+        return origWarn(...)
+    end
+    
+    _G.print = print
+    _G.warn = warn
+    if getgenv then
+        getgenv().print = print
+        getgenv().warn = warn
+    end
+
+    local consoleFuncs = {
+        "rconsoleprint", "rconsoleinfo", "rconsoleerr", "rconsolelog", 
+        "rconsolewrite", "rconsolewarn", "consoleprint", "consolewarn"
+    }
+    
+    for _, funcName in ipairs(consoleFuncs) do
+        pcall(function()
+            if getgenv and getgenv()[funcName] then
+                local orig = getgenv()[funcName]
+                getgenv()[funcName] = function(content, ...)
+                    if isRequestContent(tostring(content)) then
+                        kickPlayer("Console logger detected")
+                        return
+                    end
+                    return orig(content, ...)
+                end
+            end
+        end)
+        
+        pcall(function()
+            if _G[funcName] then
+                local orig = _G[funcName]
+                _G[funcName] = function(content, ...)
+                    if isRequestContent(tostring(content)) then
+                        kickPlayer("Console logger detected")
+                        return
+                    end
+                    return orig(content, ...)
+                end
+            end
+        end)
+    end
+end
+
+local function destroyMaliciousGUI(obj)
+    if isLegitimateUI(obj) then return end
+    
+    task.spawn(function()
+        local root = obj
+        local tries = 0
+        
+        while root and root.Parent ~= CoreGui and root.Parent ~= game and tries < 10 do
+            root = root.Parent
+            tries = tries + 1
+        end
+        
+        if root and root:IsA("Instance") and not isLegitimateUI(root) then
+            pcall(function() root:Destroy() end)
+        elseif not isLegitimateUI(obj) then
+            pcall(function() obj:Destroy() end)
+        end
+        
+        if obj and obj.Parent and obj.Parent:IsA("Instance") and not isLegitimateUI(obj.Parent) then
+            pcall(function() obj.Parent:Destroy() end)
+        end
+        
+        if not kickInitiated then
+            kickPlayer("HTTP logger GUI detected")
+        end
+    end)
+end
+
+local function checkTextElement(obj)
+    if not obj or not obj:IsA("Instance") then return end
+    if isLegitimateUI(obj) then return end
+    
+    if not (obj:IsA("TextLabel") or obj:IsA("TextBox") or obj:IsA("TextButton") or obj:IsA("RichTextLabel")) then
+        return
+    end
+    
+    local function checkText()
+        if not obj or not obj:IsA("Instance") or not obj.Parent then return false end
+        if isLegitimateUI(obj) then return false end
+        
+        local text = obj.Text
+        if text and #text > 15 and isRequestContent(text) then
+            destroyMaliciousGUI(obj)
+            return true
+        end
+        return false
+    end
+    
+    if checkText() then return end
+    
+    local connection
+    pcall(function()
+        connection = obj:GetPropertyChangedSignal("Text"):Connect(function()
+            if checkText() and connection then
+                connection:Disconnect()
+            end
+        end)
+    end)
+    
+    pcall(function()
+        obj.AncestryChanged:Connect(function(_, parent)
+            if not parent and connection then
+                connection:Disconnect()
+            end
+        end)
+    end)
+end
+
+local function scanGUI(root)
+    if not root or not root:IsA("Instance") then return end
+    if isLegitimateUI(root) then return end
+    
+    pcall(function()
+        for _, descendant in ipairs(root:GetDescendants()) do
+            task.spawn(function()
+                checkTextElement(descendant)
+            end)
+        end
+    end)
+    
+    pcall(function()
+        root.DescendantAdded:Connect(function(obj)
+            task.spawn(function()
+                checkTextElement(obj)
+            end)
+        end)
+    end)
+end
+
+local function scanAllLocations()
+    pcall(function()
+        for _, child in ipairs(CoreGui:GetChildren()) do
+            if not isLegitimateUI(child) then
+                task.spawn(function()
+                    scanGUI(child)
+                end)
+            end
+        end
+    end)
+    
+    pcall(function()
+        local playerGui = lp:FindFirstChild("PlayerGui")
+        if playerGui then
+            for _, child in ipairs(playerGui:GetChildren()) do
+                if not isLegitimateUI(child) then
+                    task.spawn(function()
+                        scanGUI(child)
+                    end)
+                end
+            end
+        end
+    end)
+end
+
+local function startActiveCleanup()
+    if activeCleanupRunning then return end
+    activeCleanupRunning = true
+    
+    task.spawn(function()
+        while true do
+            task.wait(1)
+            
+            pcall(function()
+                for _, obj in ipairs(CoreGui:GetDescendants()) do
+                    if not isLegitimateUI(obj) and (obj:IsA("TextLabel") or obj:IsA("TextBox") or obj:IsA("TextButton") or obj:IsA("RichTextLabel")) then
+                        if obj.Text and #obj.Text > 15 and isRequestContent(obj.Text) then
+                            destroyMaliciousGUI(obj)
+                        end
+                    end
+                end
+            end)
+        end
+    end)
+end
+
+task.spawn(function()
+    captureRequest("https://example.com/api/endpoint")
+    captureRequest("https://api.example.org/data/collect")
+    captureRequest("https://github.com/user/repo/raw/main/logger.lua")
+    captureRequest("https://pastebin.com/raw/abcdef123")
+    captureRequest("https://raw.githubusercontent.com/user/repo/main/script.lua")
+    captureRequest("https://discord.com/api/webhooks/")
+end)
+
+hookHttpMethods()
+hookFileSystemFunctions()
+hookClipboardFunctions()
+hookConsoleFunctions()
+
+task.wait(2)
+scanAllLocations()
+startActiveCleanup()
+
+CoreGui.ChildAdded:Connect(function(child)
+    if not isLegitimateUI(child) then
+        task.spawn(function()
+            task.wait(0.5)
+            scanGUI(child)
+        end)
+    end
+end)
+
+task.spawn(function()
+    while task.wait(3) do
+        hookHttpMethods()
+        hookFileSystemFunctions()
+        hookClipboardFunctions()
+    end
+end)
