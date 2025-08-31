@@ -3,7 +3,7 @@ if _G.__ANTI_HTTP_SPY_ACTIVE then
 end
 _G.__ANTI_HTTP_SPY_ACTIVE = true
 
-local DEBUG_MODE = false
+local DEBUG_MODE = true
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
