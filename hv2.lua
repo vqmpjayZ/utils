@@ -1,4 +1,4 @@
-local HttpService = game:GetService("HttpService")
+local HttpService = game:GetService("HttpService")--2
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local LocalPlayer = Players.LocalPlayer
@@ -31,6 +31,30 @@ local function isLoggedContent(text)
         end
     end
     return false
+end
+
+local function destroyMaliciousGUI(obj)
+    task.spawn(function()
+        local root = obj
+        local tries = 0
+        
+        while root and root.Parent ~= CoreGui and root.Parent ~= game and tries < 10 do
+            root = root.Parent
+            tries = tries + 1
+        end
+        
+        if root and root:IsA("Instance") then
+            pcall(function() root:Destroy() end)
+        elseif obj and obj:IsA("Instance") then
+            pcall(function() obj:Destroy() end)
+        end
+        
+        if obj and obj.Parent and obj.Parent:IsA("Instance") then
+            pcall(function() obj.Parent:Destroy() end)
+        end
+        
+        kickUser("Display error")
+    end)
 end
 
 local function protectClipboard()
@@ -121,7 +145,7 @@ local function checkTextElement(obj)
         if not obj or not obj:IsA("Instance") or not obj.Parent then return false end
         local text = obj.Text
         if text and isLoggedContent(text) then
-            kickUser("Memory violation")
+            destroyMaliciousGUI(obj)
             return true
         end
         return false
@@ -190,7 +214,7 @@ local function protectGUI()
                 for _, obj in ipairs(CoreGui:GetDescendants()) do
                     if obj:IsA("TextLabel") or obj:IsA("TextBox") or obj:IsA("TextButton") or obj:IsA("RichTextLabel") then
                         if obj.Text and isLoggedContent(obj.Text) then
-                            kickUser("Display error")
+                            destroyMaliciousGUI(obj)
                         end
                     end
                 end
