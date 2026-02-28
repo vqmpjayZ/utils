@@ -144,21 +144,34 @@ async function getQuests() {
 				return;
 			}
 
-			let res = await api.get({ url: `/applications/public?application_ids=${applicationId}` });
-			const appData = res.body[0];
-			const exeName = appData.executables.find((x) => x.os === "win32").name.replace(">", "");
+			let exeName = `${applicationName}.exe`;
+			let appName = applicationName;
+
+			try {
+				let res = await api.get({ url: `/applications/public?application_ids=${applicationId}` });
+				const appData = res.body?.[0];
+				if (appData) {
+					appName = appData.name || applicationName;
+					const foundExe = appData.executables?.find((x) => x.os === "win32");
+					if (foundExe) {
+						exeName = foundExe.name.replace(">", "");
+					}
+				}
+			} catch (e) {
+				console.log("Failed to fetch application data, using fallback values.", e);
+			}
 
 			const fakeGame = {
-				cmdLine: `C:\\Program Files\\${appData.name}\\${exeName}`,
+				cmdLine: `C:\\Program Files\\${appName}\\${exeName}`,
 				exeName,
-				exePath: `c:/program files/${appData.name.toLowerCase()}/${exeName}`,
+				exePath: `c:/program files/${appName.toLowerCase()}/${exeName}`,
 				hidden: false,
 				isLauncher: false,
 				id: applicationId,
-				name: appData.name,
+				name: appName,
 				pid: pid,
 				pidPath: [pid],
-				processName: appData.name,
+				processName: appName,
 				start: Date.now(),
 			};
 
@@ -172,7 +185,7 @@ async function getQuests() {
 				FluxDispatcher.dispatch({ type: "RUNNING_GAMES_CHANGE", removed: realGames, added: [fakeGame], games: [fakeGame] });
 			}
 
-			console.log(`Spoofed game to ${applicationName}. Sending heartbeats every 20s for ~${Math.ceil((secondsNeeded - secondsDone) / 60)} minutes.`);
+			console.log(`Spoofed game to ${appName}. Sending heartbeats every 20s for ~${Math.ceil((secondsNeeded - secondsDone) / 60)} minutes.`);
 
 			const channelId = ChannelStore?.getSortedPrivateChannels?.()?.[0]?.id ?? Object.values(GuildChannelStore?.getAllGuilds?.() ?? {}).find((x) => x != null && x.VOCAL?.length > 0)?.VOCAL[0]?.channel?.id ?? "0";
 			const streamKey = `call:${channelId}:1`;
@@ -257,16 +270,19 @@ async function getQuests() {
 			console.log("Completing quest", questName);
 
 			while (true) {
-				const res = await api.post({ url: `/quests/${quest.id}/heartbeat`, body: { stream_key: streamKey, terminal: false } });
-				const progress = res.body.progress.PLAY_ACTIVITY.value;
-				console.log(`Quest progress: ${progress}/${secondsNeeded}`);
+				try {
+					const res = await api.post({ url: `/quests/${quest.id}/heartbeat`, body: { stream_key: streamKey, terminal: false } });
+					const progress = res.body?.progress?.PLAY_ACTIVITY?.value ?? secondsDone;
+					console.log(`Quest progress: ${progress}/${secondsNeeded}`);
 
-				await new Promise((resolve) => setTimeout(resolve, 20 * 1000));
-
-				if (progress >= secondsNeeded) {
-					await api.post({ url: `/quests/${quest.id}/heartbeat`, body: { stream_key: streamKey, terminal: true } });
-					break;
+					if (progress >= secondsNeeded) {
+						await api.post({ url: `/quests/${quest.id}/heartbeat`, body: { stream_key: streamKey, terminal: true } });
+						break;
+					}
+				} catch (e) {
+					console.log("Heartbeat error:", e);
 				}
+				await new Promise((resolve) => setTimeout(resolve, 20 * 1000));
 			}
 
 			console.log("Quest completed!");
